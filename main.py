@@ -1,8 +1,9 @@
 import discord
 from discord.ext import commands
 import random
-import http.client
-from pubgstats import *
+import matplotlib.pyplot as plt
+import matplotlib
+import tinypubgdb
 
 allstats = [x.lower() for x in ['K/D Ratio','Win %','Time Survived','Rounds Played','Wins','Win Top 10 Ratio','Top 10s','Top 10 Ratio',
          'Losses','Rating','Best Rating','Damage Pg','Headshot Kills Pg','Heals Pg','Kills Pg','Move Distance Pg',
@@ -22,15 +23,21 @@ module.
 There are a number of utility commands being showcased here.'''
 bot = commands.Bot(command_prefix='?', description=description)
 client = discord.Client()
+stat_db = tinypubgdb.Tinypubgdb('db.json')
+stat_db.update()
 
 def table(players,srv,match,stat,seas):
+
+    def extendlength(str, length):
+        return str + (length-len(str)) * ' '
+
     table = dict()
     tab = []
     for player in players:
-        table[player.getname()] = player.stat(srv, match, stat,seas)
+        table[player] = stat_db.stat(player, srv, match, stat,seas)
     ordered_table = sorted(table, key=table.__getitem__)
     for i, x in enumerate(ordered_table[::-1]):
-        tab.append(str(i+1) + '. ' + x + ' - ' + str(table[x]))
+        tab.append(extendlength(str(i+1),2) + '. ' + extendlength(x,20) + extendlength(str(table[x]),10))
     return tab
 
 def getseasons(players):
@@ -46,60 +53,71 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
-@bot.command()
-async def add(left : int, right : int):
-    """Adds two numbers together."""
-    await bot.say(left + right)
 
 @bot.command()
 async def subscribe(name: str):
-    conn = http.client.HTTPSConnection("pubgtracker.com", port=443)
-    conn.connect()
-    conn.request("GET", '/api/profile/pc/' + name, headers={'TRN-Api-Key': '9c4b760c-b8bf-481f-a720-7a5d1c87870c'})
-    response = conn.getresponse()
-    res = response.read().decode("utf-8")
-    data = json.loads(res)
-    conn.close()
-    if data['AccountId'] is None:
-        await bot.say(name + ' existiert nicht')
+    try:
+        stat_db.subscribe(name)
+    except Exception as e:
+        await bot.say(e)
+    await bot.say(name + ' wurde in die Subscriberliste aufgenommen')
+
+@bot.command()
+async  def progression(name: str, *params: str):
+    if len(params) < 1:
+        text = '''Hilfe: Funktionsaufruf ?progression 
+            Aufruf:   ?progression player region match season "stat" <- Achtung Anführungszeichen u.U. notwendig
+            Mögliche Parameter:
+            region = {0}
+            match = {1}                
+            stats = {2}
+
+            Beispiel: ?stats agg squad "Longest Kill"
+            '''.format(regs, matches, allstats)
+        await bot.say(text)
         return
 
-    f = open('subs.txt', 'a')
-    f.write(name + '\n')
-    f.close()
-    await bot.say(name + ' wurde in die Subscriberliste aufgenommen')
+    elif len(params) >= 4:
+        srv, match, stat, season = params[0], params[1], params[3], params[2]
+    elif len(params) == 3:
+        srv, match, stat, season = params[0], params[1], params[2], max(stat_db.getseasons())
+    elif len(params) == 2:
+        srv, match, stat = 'agg', params[0], params[1]
+    x, y, x_labels = stat_db.progression(name, srv, match, stat, params[2])
+    with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
+        fig, ax = plt.subplots(nrows=1, ncols=1)
+        p = ax.plot(y, x)
+        ax.set_xticklabels(x_labels)
+        ax.set_facecolor((54 / 256, 57 / 256, 62 / 256))
+        fig.set_facecolor((54 / 256, 57 / 256, 62 / 256))
+        title_obj = plt.title(name + ': ' + srv + ', '+ match + ', '+ season  , fontsize=20)
+        plt.setp(title_obj, color='w')
+        plt.ylabel(stat)
+        plt.xlabel('Datum')
+        ax.xaxis.label.set_color('white')
+        ax.yaxis.label.set_color('white')
+
+        fig.savefig('tmp.png',facecolor=fig.get_facecolor())
+    print(x)
+    print(y)
+
+    #
+    await bot.upload('tmp.png')
 
 
 @bot.command()
 async def unsubscribe(name: str):
-    found = False
-    names = ''
-    with open('subs.txt') as f:
-        for line in f:
-            if line.lower().replace('\n','') == name.lower():
-                found = True
-            else:
-                names = names + line
-
-    if found:
-        await bot.say(name + ' wurde aus der Subscriberliste gelöscht')
-        f = open('subs.txt', 'w')
-        f.write(names)
-        f.close()
-    else:
-        await bot.say(name + ' ist nicht in der Subscriberliste vorhanden')
-
-
-
+    worked = False
+    try:
+        worked = stat_db.unsubscribe(name)
+    except Exception as e:
+        await bot.say(e)
+    if worked:
+        await bot.say(name + ' wurde unsubscribed')
 
 @bot.command()
 async def subscribers():
-    response = ''
-    with open('subs.txt') as f:
-        names = [line.replace('\n','') for line in iter(f.readline, '')]
-    for entry in names:
-        response = response + entry + '\n'
-    await bot.say(response)
+    await bot.say(str(stat_db.getsubscribers()))
 
 @bot.command()
 async def stats(*params: str):
@@ -121,11 +139,8 @@ async def stats(*params: str):
     elif len(params) == 2:
         srv, match, stat = 'agg', params[0], params[1]
 
-    with open('subs.txt') as f:
-        names = [line.replace('\n','')
-                 for line in iter(f.readline, '')]
 
-    print(names)
+    names = stat_db.getsubscribers()
     if stat.lower() not in allstats:
         await bot.say('geforderter Stat {0} nicht enthalten. Wähle aus diesen hier aus:\n{1}'.format(stat,allstats))
         return
@@ -137,37 +152,16 @@ async def stats(*params: str):
 
 
     await bot.say('Anfrage wird bearbeitet...')
-    players = []
-    conn = http.client.HTTPSConnection("pubgtracker.com", port=443)
-    conn.connect()
-    for name in names:
-        conn.request("GET", '/api/profile/pc/' + name, headers={'TRN-Api-Key': '9c4b760c-b8bf-481f-a720-7a5d1c87870c'})
-        response = conn.getresponse()
-        res = response.read().decode("utf-8")
-        print(res)
-        data = json.loads(res)
-
-
-        players.append(Pubgstats(data))
-
-    conn.close()
-    seasons = getseasons(players)
-    out = ''
-    #try:
+    seasons = stat_db.getseasons()
+    out = "```\n"
     for s in seasons:
-        out = out + s + '\n----------------\n'
-        t = table(players,srv,match,stat,s)
+        out = out + s + '\n-------------------------\n'
+        t = table(names,srv,match,stat,s)
         for entry in t:
             out = out + entry + '\n'
         out = out + '\n'
-    #except Exception as e:
-    #    print(e)
-    #    await bot.say('Fehler ...')
 
-    await bot.say('Ranking - ' + match + ' - ' + stat + '\n' + out)
-
-
-
+    await bot.say('Ranking - ' + match + ' - ' + stat + '\n' + out + '```')
 
 @bot.command()
 async def roll(dice : str):
@@ -205,13 +199,8 @@ async def cool(ctx):
     if ctx.invoked_subcommand is None:
         await bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
 
-@cool.command(name='bot')
-async def _bot():
-    """Is the bot cool?"""
-    await bot.say('Yes, the bot is cool.')
-
-
-
-
 bot.run('MzE5NTkwODk3MTc4Mzc4MjQw.DBDP0Q._4jfpQcfOIx91sTuUiquyDbSK3Y')
+
+
+
 
