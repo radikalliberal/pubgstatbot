@@ -1,36 +1,35 @@
 from tinydb import TinyDB, Query
-import Pubgdataminer
 import datetime
 import ujson
 
 class Tinypubgdb:
-    def __init__(self, path):
+    def __init__(self, path, miner):
         self.db = TinyDB(path)
         self.seasons = self.db.table('seasons')
         self.subs = self.db.table('subscriptions', cache_size=None)
         self.regs = ['eu', 'na', 'as', 'sa', 'agg']
         self.matches = ['solo', 'duo', 'squad']
+        self.miner = miner
 
     '''Diese Methode sollte einmal am Tag aufgerufen werden damit neue Stats von Pubgtracker.com abgerufen werden
     und in der Datenbank aktualisiert werden'''
     def update(self):
         names = self.getsubscribers()
         player_tables = [self.db.table(y) for y in names]
-        uptodate = [x.contains(Query().timestamp == str(datetime.date.today())) for x in player_tables ]
-        miner = Pubgdataminer.Pubgdataminer()
-        miner.connect()
+        uptodate = [x.contains(Query().timestamp == str(datetime.date.today())) for x in player_tables]
+        self.miner.connect()
         for utd, name in zip(uptodate,names):
             if utd:
                 continue
-            data = ujson.loads(miner.getdata(name))
+            data = ujson.loads(self.miner.getdata(name))
             entry = self.build_entry(data)
-            player_table = self.db.table(name, cache_size=None)
+            player_table = self.db.table(name.lower(), cache_size=None)
             player_table.insert(entry)
             print(entry)
             if not self.seasons.contains(Query().name == entry['season']):
                 self.seasons.insert({'name':entry['season']})
 
-        miner.close()
+        self.miner.close()
 
     def build_entry(self, json_obj):
         temp = dict()
@@ -60,29 +59,31 @@ class Tinypubgdb:
     def getseasons(self):
         return [seas['name'] for seas in self.seasons.all()]
 
+    def getcurrentseason(self):
+        return max([seas['name'] for seas in self.seasons.all()])
+
     def subscribe(self, name):
-        if self.subs.search(Query().name == name):
-            if self.subs.search((Query().name == name) & (Query().active == False)):
-                self.subs.update({'active':True},Query().name == name)
-            elif self.subs.search((Query().name == name) & (Query().active == True)):
+        if self.subs.search(Query().name.lower() == name.lower()):
+            if self.subs.search((Query().name.lower() == name.lower()) & (Query().active == False)):
+                self.subs.update({'active':True},Query().name.lower() == name.lower())
+            elif self.subs.search((Query().name.lower() == name.lower()) & (Query().active == True)):
                 raise Exception('Spieler ist bereits subscribed')
             return
-        miner = Pubgdataminer.Pubgdataminer()
-        miner.connect()
-        res = miner.getdata(name)
+        self.miner.connect()
+        res = self.miner.getdata(name)
         data = ujson.loads(res)
-        miner.close()
+        self.miner.close()
         if data['AccountId'] is None:
             raise NameError('Spielername nicht bei pubgtracker.com vorhanden')
         else:
-            self.subs.insert({'name':name,'AccountId':data['AccountId'],'Avatar':data['Avatar'],'active':True})
+            self.subs.insert({'name':name.lower(),'AccountId':data['AccountId'],'Avatar':data['Avatar'],'active':True})
             self.update()
 
     def getsubscribers(self):
         return [entry['name'] for entry in self.subs.search(Query().name.matches('.*')) if entry['active']]
 
     def stat(self, player, srv, match, stat, season):
-        p_table = self.db.table(player)
+        p_table = self.db.table(player.lower())
         if len(p_table) < 1:
             return 0
         entry = dict(p_table.get((Query().timestamp == str(datetime.date.today())) & (Query().season == season)))
@@ -106,8 +107,13 @@ class Tinypubgdb:
             integer_timestamp = (naive - epoch) // datetime.timedelta(days=1)
             return integer_timestamp
 
+        print(self.db.tables())
 
-        p_table = self.db.table(player)
+        if player.lower() not in self.db.tables():
+            raise Exception('Spieler ' + player + ' nicht in Datenbank vorhanden')
+            return
+
+        p_table = self.db.table(player.lower())
         entry = p_table.search((Query().season == season))
         x, y , y_labels = [], [], []
         for e in entry:
@@ -123,9 +129,9 @@ class Tinypubgdb:
         return x, y, y_labels
 
     def unsubscribe(self, n):
-        if not self.subs.contains(Query().name == n):
+        if not self.subs.contains(Query().name.lower() == n.lower()):
             raise Exception('Spieler war nie subscribed')
-        if self.subs.search((Query().active == False) & (Query().name == n)):
+        if self.subs.search((Query().active == False) & (Query().name.lower() == n.lower())):
             raise Exception('Spieler ist bereits unsubscribed')
-        self.subs.update({'active':False},Query()['name'] == n )
+        self.subs.update({'active':False},Query()['name'].lower() == n.lower() )
         return True

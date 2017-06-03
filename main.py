@@ -4,27 +4,11 @@ import random
 import matplotlib.pyplot as plt
 import matplotlib
 import tinypubgdb
+import numpy as np
+import sys
+import Pubgdataminer
 
-allstats = [x.lower() for x in ['K/D Ratio','Win %','Time Survived','Rounds Played','Wins','Win Top 10 Ratio','Top 10s','Top 10 Ratio',
-         'Losses','Rating','Best Rating','Damage Pg','Headshot Kills Pg','Heals Pg','Kills Pg','Move Distance Pg',
-         'Revives Pg','Road Kills Pg','Team Kills Pg','Time Survived Pg','Top 10s Pg','Kills','Assists','Suicides',
-         'Team Kills','Headshot Kills','Headshot Kill Ratio','Vehicle Destroys','Road Kills','Daily Kills',
-         'Weekly Kills','Round Most Kills','Max Kill Streaks','Days','Longest Time Survived','Most Survival Time',
-         'Avg Survival Time','Win Points','Walk Distance','Ride Distance','Move Distance','Avg Walk Distance',
-         'Avg Ride Distance','Longest Kill','Heals','Revives','Boosts','Damage Dealt','DBNOs']]
-
-
-regs = ['eu','na','as','sa','agg']
-
-matches = ['solo','duo','squad']
-
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
-There are a number of utility commands being showcased here.'''
-bot = commands.Bot(command_prefix='?', description=description)
-client = discord.Client()
-stat_db = tinypubgdb.Tinypubgdb('db.json')
-stat_db.update()
+bot = commands.Bot(command_prefix='?')
 
 def table(players,srv,match,stat,seas):
 
@@ -63,47 +47,72 @@ async def subscribe(name: str):
     await bot.say(name + ' wurde in die Subscriberliste aufgenommen')
 
 @bot.command()
-async  def progression(name: str, *params: str):
+async def progression(names: str, *params: str):
     if len(params) < 1:
         text = '''Hilfe: Funktionsaufruf ?progression 
-            Aufruf:   ?progression player region match season "stat" <- Achtung Anführungszeichen u.U. notwendig
+            Aufruf:   ?progression **players** **match** "**stat**" [*region* *season*]
+
             Mögliche Parameter:
+            players = 1 oder mehr Spieler, die subscribed sind (kommaseperiert)
             region = {0}
             match = {1}                
-            stats = {2}
+            seasons = {2}
+            stats <- Achtung Anführungszeichen u.U. notwendig = {3} 
 
-            Beispiel: ?stats agg squad "Longest Kill"
-            '''.format(regs, matches, allstats)
+            Beispiel: ?progression crazy_,DrDisRespect squad  "Longest Kill"
+            '''.format(regs, matches, stat_db.getseasons(), allstats)
         await bot.say(text)
         return
-
     elif len(params) >= 4:
-        srv, match, stat, season = params[0], params[1], params[3], params[2]
+        match, stat, srv, season = params[0], params[1], params[2], params[3]
     elif len(params) == 3:
-        srv, match, stat, season = params[0], params[1], params[2], max(stat_db.getseasons())
+        match, stat, srv, season = params[0], params[1], params[2], stat_db.getcurrentseason()
     elif len(params) == 2:
-        srv, match, stat = 'agg', params[0], params[1]
-    x, y, x_labels = stat_db.progression(name, srv, match, stat, params[2])
+        match, stat, srv, season = params[0], params[1], 'agg', stat_db.getcurrentseason()
+    path_pic = './pics/' + names.lower() + srv.lower() + match.lower() + stat.lower() + '.png'
+
+    print('progression '+names + ' ' + match + ' ' + stat + ' ' + srv + ' ' + season)
+
     with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
         fig, ax = plt.subplots(nrows=1, ncols=1)
-        p = ax.plot(y, x)
-        ax.set_xticklabels(x_labels)
+        names = names.split(',')
+        x, y, x_labels = [], [], []
+
+        for i, name in enumerate(names):
+            try:
+                y_, x_, x_labels_ = stat_db.progression(name, srv, match, stat, season)
+                x.append(x_)
+                y.append(y_)
+                x_labels.append(x_labels_)
+                ax.plot(x_, y_)
+            except Exception as e:
+                names[i] = None
+                await bot.say(e)
+
+        names = [n for n in names if n is not None]
+        x = np.array(x)
+        x_labels = np.array(x_labels)
+        indices = [x_i for x_i in range(len(x.flatten()))]
+        vals = [x.flatten(), x_labels.flatten()]
+        indices.sort(key=vals[0].__getitem__)
+        for i, sublist in enumerate(vals):
+            vals[i] = [sublist[j] for j in indices]
+
+        ax.grid(color=(154 / 256, 157 / 256, 162 / 256), linestyle='-', linewidth=1)
+        ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator(vals[0]))
+        ax.xaxis.set_major_formatter(matplotlib.ticker.FixedFormatter(vals[1]))
         ax.set_facecolor((54 / 256, 57 / 256, 62 / 256))
         fig.set_facecolor((54 / 256, 57 / 256, 62 / 256))
-        title_obj = plt.title(name + ': ' + srv + ', '+ match + ', '+ season  , fontsize=20)
+        title_obj = plt.title(str(names) + ': ' + srv + ', ' + match + ', ' + season, fontsize=10)
         plt.setp(title_obj, color='w')
         plt.ylabel(stat)
+        plt.legend(names)
         plt.xlabel('Datum')
-        ax.xaxis.label.set_color('white')
-        ax.yaxis.label.set_color('white')
+        ax.xaxis.label.set_color('w')
+        ax.yaxis.label.set_color('w')
+        fig.savefig(path_pic, facecolor=fig.get_facecolor())
 
-        fig.savefig('tmp.png',facecolor=fig.get_facecolor())
-    print(x)
-    print(y)
-
-    #
-    await bot.upload('tmp.png')
-
+    await bot.upload(path_pic)
 
 @bot.command()
 async def unsubscribe(name: str):
@@ -121,6 +130,7 @@ async def subscribers():
 
 @bot.command()
 async def stats(*params: str):
+    stat_db.update()
     if len(params) < 2:
         text = '''Hilfe: Funktionsaufruf ?stats 
             Aufruf:   ?stats region match "stat" <- Achtung Anführungszeichen u.U. notwendig
@@ -164,16 +174,20 @@ async def stats(*params: str):
     await bot.say('Ranking - ' + match + ' - ' + stat + '\n' + out + '```')
 
 @bot.command()
-async def roll(dice : str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split('d'))
-    except Exception:
-        await bot.say('Format has to be in NdN!')
-        return
+async def update():
+    stat_db.update()
+    await bot.say('Datenbank auf den neusten Stand gebracht')
 
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await bot.say(result)
+
+@bot.command()
+async def currentseason():
+    await bot.say(stat_db.getcurrentseason())
+
+@bot.command()
+
+async def seasons():
+    stat_db.getseasons()
+    await bot.say(stat_db.getseasons())
 
 @bot.command(description='For when you wanna settle the score some other way')
 async def choose(*choices : str):
@@ -199,7 +213,33 @@ async def cool(ctx):
     if ctx.invoked_subcommand is None:
         await bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
 
-bot.run('MzE5NTkwODk3MTc4Mzc4MjQw.DBDP0Q._4jfpQcfOIx91sTuUiquyDbSK3Y')
+
+def main(argv):
+    bot.run(argv[0])
+
+if __name__ == '__main__':
+    allstats = [x.lower() for x in
+                ['K/D Ratio', 'Win %', 'Time Survived', 'Rounds Played', 'Wins', 'Win Top 10 Ratio', 'Top 10s',
+                 'Top 10 Ratio',
+                 'Losses', 'Rating', 'Best Rating', 'Damage Pg', 'Headshot Kills Pg', 'Heals Pg', 'Kills Pg',
+                 'Move Distance Pg',
+                 'Revives Pg', 'Road Kills Pg', 'Team Kills Pg', 'Time Survived Pg', 'Top 10s Pg', 'Kills', 'Assists',
+                 'Suicides',
+                 'Team Kills', 'Headshot Kills', 'Headshot Kill Ratio', 'Vehicle Destroys', 'Road Kills', 'Daily Kills',
+                 'Weekly Kills', 'Round Most Kills', 'Max Kill Streaks', 'Days', 'Longest Time Survived',
+                 'Most Survival Time',
+                 'Avg Survival Time', 'Win Points', 'Walk Distance', 'Ride Distance', 'Move Distance',
+                 'Avg Walk Distance',
+                 'Avg Ride Distance', 'Longest Kill', 'Heals', 'Revives', 'Boosts', 'Damage Dealt', 'DBNOs']]
+
+    regs = ['eu', 'na', 'as', 'sa', 'agg']
+    matches = ['solo', 'duo', 'squad']
+
+    stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
+    stat_db.update()
+    main(sys.argv[1:])
+
+
 
 
 

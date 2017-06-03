@@ -13,7 +13,7 @@
       "active": true
     },
     "2": {
-      "name": "DrDisRespect",
+      "name": "drdisrespect",
       "AccountId": "account.95f589d2b274412bb0122750ea8debc0",
       "Avatar": "https:\/\/steamcdn-a.akamaihd.net\/steamcommunity\/public\/images\/avatars\/89\/89822a1526215da961395c8b7f7003ab2c9d9ca3.jpg",
       "active": true
@@ -37,19 +37,19 @@
       "active": true
     },
     "6": {
-      "name": "mast0r_D",
+      "name": "mast0r_d",
       "AccountId": "account.3f05424b82f84bdca7c0541c3856f9ba",
       "Avatar": "https:\/\/steamcdn-a.akamaihd.net\/steamcommunity\/public\/images\/avatars\/61\/61f2cfda5733a6dd512b47313723bf204aae84a2.jpg",
       "active": true
     },
     "7": {
-      "name": "CleverUndSmart",
+      "name": "cleverundsmart",
       "AccountId": "account.8d8df12255e848cf9a4ffd0bee816e8e",
       "Avatar": "https:\/\/steamcdn-a.akamaihd.net\/steamcommunity\/public\/images\/avatars\/c5\/c5998b55939369d44881dfa35f22724bf07e256c.jpg",
       "active": true
     },
     "8": {
-      "name": "Screemer",
+      "name": "screemer",
       "AccountId": "account.c8d48f69871f4b3da0a7b23925bbd081",
       "Avatar": "https:\/\/steamcdn-a.akamaihd.net\/steamcommunity\/public\/images\/avatars\/90\/9068b107088dadaebae77532c4d908eb849e1d09.jpg",
       "active": true
@@ -61,7 +61,7 @@
       "active": true
     },
     "10": {
-      "name": "Gooseman",
+      "name": "gooseman",
       "AccountId": "account.d2f9b8aad18442f1a195fe6c6d6a8ea7",
       "Avatar": "https:\/\/steamcdn-a.akamaihd.net\/steamcommunity\/public\/images\/avatars\/03\/030eaedb49a3de7ad4277b46c4fb5b44a730c2db.jpg",
       "active": false
@@ -1241,8 +1241,1329 @@
       ]
     }
   },
-  "DrDisRespect": {
+  "drdisrespect": {
     "1": {
+      "timestamp": "2017-06-02",
+      "season": "2017-pre2",
+      "Region": [
+        {
+          "name": "eu",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": []
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": []
+            }
+          ]
+        },
+        {
+          "name": "na",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 2.44,
+                  "percentile": 26.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 10.0,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 10649.68,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 10.0,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 1.0,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 1.0,
+                  "percentile": 7.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 49.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.1,
+                  "percentile": 49.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 9.0,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1369.46,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1386.04,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 233.8,
+                  "percentile": 32.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.3,
+                  "percentile": 40.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 1.0,
+                  "percentile": 57.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 2.2,
+                  "percentile": 30.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 4572.54,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.1,
+                  "percentile": 6.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1064.97,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.1,
+                  "percentile": 49.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 22.0,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 1.0,
+                  "percentile": 30.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 3.0,
+                  "percentile": 26.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.14,
+                  "percentile": 48.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 1.0,
+                  "percentile": 10.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 22.0,
+                  "percentile": 5.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 22.0,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 7.0,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 2.0,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1970.72,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1970.72,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1064.97,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1134.0,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 16565.43,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 29160.02,
+                  "percentile": 7.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 45725.45,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 1656.54,
+                  "percentile": 45.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 2916.0,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 213.56,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 10.0,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 12.0,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 2338.01,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 5.0,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 2123.63,
+                  "percentile": 81.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 2.0,
+                  "percentile": 88.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 88.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.5,
+                  "percentile": 57.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 2.0,
+                  "percentile": 82.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1227.34,
+                  "percentile": 70.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1205.93,
+                  "percentile": 74.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 615.96,
+                  "percentile": 4.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 1.5,
+                  "percentile": 4.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 0.5,
+                  "percentile": 85.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 5.0,
+                  "percentile": 5.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 2644.42,
+                  "percentile": null
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1061.82,
+                  "percentile": null
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.5,
+                  "percentile": null
+                },
+                {
+                  "label": "Kills",
+                  "value": 10.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Assists",
+                  "value": 0.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 3.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.3,
+                  "percentile": null
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 10.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 10.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 6.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 2.0,
+                  "percentile": 55.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1486.7,
+                  "percentile": null
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1486.7,
+                  "percentile": null
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1061.82,
+                  "percentile": null
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1005.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 4722.28,
+                  "percentile": null
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 566.56,
+                  "percentile": null
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 5288.84,
+                  "percentile": null
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 2361.14,
+                  "percentile": null
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 283.28,
+                  "percentile": null
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 190.57,
+                  "percentile": null
+                },
+                {
+                  "label": "Heals",
+                  "value": 1.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 1.0,
+                  "percentile": null
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 1231.92,
+                  "percentile": null
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 10.0,
+                  "percentile": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "as",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 1.5,
+                  "percentile": 53.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 546.04,
+                  "percentile": 97.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 2.0,
+                  "percentile": 75.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 2.0,
+                  "percentile": 71.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1183.03,
+                  "percentile": 93.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1201.85,
+                  "percentile": 65.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 219.52,
+                  "percentile": 44.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 0.5,
+                  "percentile": 71.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 1.5,
+                  "percentile": 55.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 247.77,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 273.02,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 3.0,
+                  "percentile": 72.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 3.0,
+                  "percentile": 66.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 3.0,
+                  "percentile": 72.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 3.0,
+                  "percentile": 66.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 1.0,
+                  "percentile": 89.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 395.51,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 395.51,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 273.02,
+                  "percentile": 99.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 979.0,
+                  "percentile": 96.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 495.54,
+                  "percentile": 97.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 495.54,
+                  "percentile": 97.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 247.77,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 153.99,
+                  "percentile": 35.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 1.0,
+                  "percentile": 77.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 2.0,
+                  "percentile": 77.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 439.04,
+                  "percentile": 64.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": []
+            }
+          ]
+        },
+        {
+          "name": "sa",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": []
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": []
+            }
+          ]
+        },
+        {
+          "name": "agg",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 2.27,
+                  "percentile": 34.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 8.33,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 11195.72,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 12.0,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 1.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.5,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 61.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.1,
+                  "percentile": 58.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 11.0,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1369.46,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1386.04,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 231.42,
+                  "percentile": 38.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.25,
+                  "percentile": 51.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 0.92,
+                  "percentile": 61.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 2.08,
+                  "percentile": 35.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 3851.75,
+                  "percentile": 37.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.08,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 932.98,
+                  "percentile": 66.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.08,
+                  "percentile": 59.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 25.0,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 1.0,
+                  "percentile": 35.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 3.0,
+                  "percentile": 32.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.12,
+                  "percentile": 57.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 1.0,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 25.0,
+                  "percentile": 7.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 25.0,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 7.0,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 2.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Days",
+                  "value": 2.0,
+                  "percentile": 39.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1970.72,
+                  "percentile": 11.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1970.72,
+                  "percentile": 11.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 668.99,
+                  "percentile": 86.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 2113.0,
+                  "percentile": 6.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 17060.97,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 29160.02,
+                  "percentile": 10.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 46220.99,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 952.16,
+                  "percentile": 81.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 1458.0,
+                  "percentile": 47.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 213.56,
+                  "percentile": 21.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 11.0,
+                  "percentile": 30.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 14.0,
+                  "percentile": 24.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 2777.04,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 5.0,
+                  "percentile": 11.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 2123.63,
+                  "percentile": 89.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 2.0,
+                  "percentile": 93.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 94.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.5,
+                  "percentile": 64.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 2.0,
+                  "percentile": 89.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1227.34,
+                  "percentile": 81.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1205.93,
+                  "percentile": 84.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 615.96,
+                  "percentile": 3.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 1.5,
+                  "percentile": 2.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 0.5,
+                  "percentile": 90.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 5.0,
+                  "percentile": 4.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 2644.42,
+                  "percentile": 74.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1061.82,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.5,
+                  "percentile": 60.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 5.0,
+                  "percentile": 52.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 3.0,
+                  "percentile": 36.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.3,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 10.0,
+                  "percentile": 41.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 10.0,
+                  "percentile": 52.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 6.0,
+                  "percentile": 33.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 2.0,
+                  "percentile": 65.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1486.7,
+                  "percentile": 91.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1486.7,
+                  "percentile": 91.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1061.82,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1005.0,
+                  "percentile": 91.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 4722.28,
+                  "percentile": 83.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 566.56,
+                  "percentile": 94.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 5288.84,
+                  "percentile": 92.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 2361.14,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 283.28,
+                  "percentile": 92.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 190.57,
+                  "percentile": 45.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 1.0,
+                  "percentile": 94.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 1.0,
+                  "percentile": 95.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 1231.92,
+                  "percentile": 53.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 10.0,
+                  "percentile": 47.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "2": {
       "timestamp": "2017-06-03",
       "season": "2017-pre2",
       "Region": [
@@ -2566,6 +3887,1819 @@
   },
   "swordo": {
     "1": {
+      "timestamp": "2017-06-01",
+      "season": "2017-pre2",
+      "Region": [
+        {
+          "name": "eu",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 3.0,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 20.0,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 8674.24,
+                  "percentile": 26.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 5.0,
+                  "percentile": 44.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 1.0,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.25,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 4.0,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.8,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 4.0,
+                  "percentile": 49.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1485.19,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1454.88,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 255.13,
+                  "percentile": 34.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 1.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 10.4,
+                  "percentile": 2.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 2.4,
+                  "percentile": 32.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 7613.01,
+                  "percentile": 4.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.2,
+                  "percentile": 6.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1734.85,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.8,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 12.0,
+                  "percentile": 31.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 5.0,
+                  "percentile": 21.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.42,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 1.0,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 5.0,
+                  "percentile": 51.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 12.0,
+                  "percentile": 31.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 7.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 1.0,
+                  "percentile": 91.0
+                },
+                {
+                  "label": "Days",
+                  "value": 2.0,
+                  "percentile": 30.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1901.15,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1901.15,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1734.85,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1248.0,
+                  "percentile": 11.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 13216.77,
+                  "percentile": 24.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 24848.29,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 38065.06,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 2643.35,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 4969.66,
+                  "percentile": 6.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 201.92,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 52.0,
+                  "percentile": 5.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 24.0,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 1275.65,
+                  "percentile": 33.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            },
+            {
+              "name": "duo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 3.4,
+                  "percentile": 18.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 16.67,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 9208.13,
+                  "percentile": 24.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 6.0,
+                  "percentile": 45.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 1.0,
+                  "percentile": 29.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.2,
+                  "percentile": 26.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 5.0,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.83,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 5.0,
+                  "percentile": 49.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1454.7,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1410.78,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 329.47,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.17,
+                  "percentile": 55.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 3.33,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 2.83,
+                  "percentile": 21.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 5652.97,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1534.69,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.83,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 17.0,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 9.0,
+                  "percentile": 8.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 1.0,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.06,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 11.0,
+                  "percentile": 26.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 17.0,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 6.0,
+                  "percentile": 29.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 2.0,
+                  "percentile": 62.0
+                },
+                {
+                  "label": "Days",
+                  "value": 2.0,
+                  "percentile": 28.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1958.72,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1958.72,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1534.69,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1212.0,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 9558.33,
+                  "percentile": 44.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 24359.48,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 33917.81,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 1593.06,
+                  "percentile": 53.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 4059.91,
+                  "percentile": 8.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 339.23,
+                  "percentile": 8.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 20.0,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 13.0,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 1976.82,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 11.0,
+                  "percentile": 21.0
+                }
+              ]
+            },
+            {
+              "name": "squad",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 1599.28,
+                  "percentile": 92.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 91.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 1.0,
+                  "percentile": 18.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 1.0,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1229.09,
+                  "percentile": 75.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1200.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 248.62,
+                  "percentile": 29.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 1.0,
+                  "percentile": 75.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 7457.07,
+                  "percentile": 5.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1599.28,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 1.0,
+                  "percentile": 18.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 1.0,
+                  "percentile": 77.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1599.28,
+                  "percentile": 79.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1599.28,
+                  "percentile": 79.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1599.28,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1027.0,
+                  "percentile": 73.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 1678.41,
+                  "percentile": 95.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 5778.66,
+                  "percentile": 61.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 7457.07,
+                  "percentile": 81.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 1678.41,
+                  "percentile": 61.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 5778.66,
+                  "percentile": 2.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 1.0,
+                  "percentile": 90.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 2.0,
+                  "percentile": 86.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 248.62,
+                  "percentile": 83.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "na",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": []
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": []
+            }
+          ]
+        },
+        {
+          "name": "as",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": []
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": []
+            }
+          ]
+        },
+        {
+          "name": "sa",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 1.5,
+                  "percentile": 42.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 2966.56,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 2.0,
+                  "percentile": 69.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 58.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.5,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 2.0,
+                  "percentile": 69.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1253.48,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1200.34,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 143.92,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 1.0,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 1.5,
+                  "percentile": 37.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 1.5,
+                  "percentile": 42.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 8055.16,
+                  "percentile": 5.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1483.28,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.5,
+                  "percentile": 27.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 3.0,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 2.0,
+                  "percentile": 48.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.67,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 3.0,
+                  "percentile": 55.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 3.0,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 3.0,
+                  "percentile": 58.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 1.0,
+                  "percentile": 85.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1833.41,
+                  "percentile": 34.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1833.41,
+                  "percentile": 34.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1483.28,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1045.0,
+                  "percentile": 42.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 3828.65,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 12281.67,
+                  "percentile": 30.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 16110.32,
+                  "percentile": 38.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 1914.32,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 6140.83,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 86.34,
+                  "percentile": 59.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 3.0,
+                  "percentile": 50.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 6.0,
+                  "percentile": 58.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 287.84,
+                  "percentile": 67.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            },
+            {
+              "name": "duo",
+              "Stats": []
+            },
+            {
+              "name": "squad",
+              "Stats": []
+            }
+          ]
+        },
+        {
+          "name": "agg",
+          "match": [
+            {
+              "name": "solo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 2.5,
+                  "percentile": 31.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 14.29,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 11640.8,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 7.0,
+                  "percentile": 31.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 1.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.12,
+                  "percentile": 21.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 5.0,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 1.3,
+                  "percentile": 2.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 6.0,
+                  "percentile": 35.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1485.19,
+                  "percentile": 10.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1454.88,
+                  "percentile": 10.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 223.36,
+                  "percentile": 39.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 1.0,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 7.86,
+                  "percentile": 2.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 2.14,
+                  "percentile": 35.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 7739.34,
+                  "percentile": 4.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.14,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1662.97,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.71,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 15.0,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 7.0,
+                  "percentile": 12.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.47,
+                  "percentile": 11.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 1.0,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 8.0,
+                  "percentile": 34.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 15.0,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 7.0,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 1.0,
+                  "percentile": 90.0
+                },
+                {
+                  "label": "Days",
+                  "value": 3.0,
+                  "percentile": 7.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1901.15,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1901.15,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1609.06,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 2293.0,
+                  "percentile": 3.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 17045.42,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 37129.96,
+                  "percentile": 7.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 54175.38,
+                  "percentile": 9.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 2278.84,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 5555.25,
+                  "percentile": 4.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 201.92,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 55.0,
+                  "percentile": 3.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 30.0,
+                  "percentile": 10.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 1563.49,
+                  "percentile": 25.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            },
+            {
+              "name": "duo",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 3.4,
+                  "percentile": 20.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 16.67,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 9208.13,
+                  "percentile": 26.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 6.0,
+                  "percentile": 44.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 1.0,
+                  "percentile": 31.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.2,
+                  "percentile": 28.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 5.0,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 0.83,
+                  "percentile": 17.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 5.0,
+                  "percentile": 48.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1454.7,
+                  "percentile": 11.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1410.78,
+                  "percentile": 13.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 329.47,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.17,
+                  "percentile": 56.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 3.33,
+                  "percentile": 18.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 2.83,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 5652.97,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1534.69,
+                  "percentile": 18.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 0.83,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 17.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 9.0,
+                  "percentile": 8.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 1.0,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.06,
+                  "percentile": 63.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 11.0,
+                  "percentile": 28.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 17.0,
+                  "percentile": 22.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 6.0,
+                  "percentile": 31.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 2.0,
+                  "percentile": 62.0
+                },
+                {
+                  "label": "Days",
+                  "value": 2.0,
+                  "percentile": 33.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1958.72,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1958.72,
+                  "percentile": 15.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1534.69,
+                  "percentile": 18.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1212.0,
+                  "percentile": 19.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 9558.33,
+                  "percentile": 42.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 24359.48,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 33917.81,
+                  "percentile": 21.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 1593.06,
+                  "percentile": 55.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 4059.91,
+                  "percentile": 10.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 339.23,
+                  "percentile": 6.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 20.0,
+                  "percentile": 23.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 13.0,
+                  "percentile": 28.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 1976.82,
+                  "percentile": 24.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 11.0,
+                  "percentile": 21.0
+                }
+              ]
+            },
+            {
+              "name": "squad",
+              "Stats": [
+                {
+                  "label": "K\/D Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win %",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived",
+                  "value": 1599.28,
+                  "percentile": 95.0
+                },
+                {
+                  "label": "Rounds Played",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Wins",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Win Top 10 Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Top 10s",
+                  "value": 1.0,
+                  "percentile": 94.0
+                },
+                {
+                  "label": "Top 10 Ratio",
+                  "value": 1.0,
+                  "percentile": 21.0
+                },
+                {
+                  "label": "Losses",
+                  "value": 1.0,
+                  "percentile": 98.0
+                },
+                {
+                  "label": "Rating",
+                  "value": 1229.09,
+                  "percentile": 80.0
+                },
+                {
+                  "label": "Best Rating",
+                  "value": 1200.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Damage Pg",
+                  "value": 248.62,
+                  "percentile": 33.0
+                },
+                {
+                  "label": "Headshot Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Heals Pg",
+                  "value": 1.0,
+                  "percentile": 78.0
+                },
+                {
+                  "label": "Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Move Distance Pg",
+                  "value": 7457.07,
+                  "percentile": 5.0
+                },
+                {
+                  "label": "Revives Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills Pg",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Time Survived Pg",
+                  "value": 1599.28,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Top 10s Pg",
+                  "value": 1.0,
+                  "percentile": 14.0
+                },
+                {
+                  "label": "Kills",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Assists",
+                  "value": 1.0,
+                  "percentile": 83.0
+                },
+                {
+                  "label": "Suicides",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Team Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Headshot Kill Ratio",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Vehicle Destroys",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Road Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Daily Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Weekly Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Round Most Kills",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Max Kill Streaks",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Days",
+                  "value": 1.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Longest Time Survived",
+                  "value": 1599.28,
+                  "percentile": 85.0
+                },
+                {
+                  "label": "Most Survival Time",
+                  "value": 1599.28,
+                  "percentile": 85.0
+                },
+                {
+                  "label": "Avg Survival Time",
+                  "value": 1599.28,
+                  "percentile": 16.0
+                },
+                {
+                  "label": "Win Points",
+                  "value": 1027.0,
+                  "percentile": 79.0
+                },
+                {
+                  "label": "Walk Distance",
+                  "value": 1678.41,
+                  "percentile": 97.0
+                },
+                {
+                  "label": "Ride Distance",
+                  "value": 5778.66,
+                  "percentile": 71.0
+                },
+                {
+                  "label": "Move Distance",
+                  "value": 7457.07,
+                  "percentile": 86.0
+                },
+                {
+                  "label": "Avg Walk Distance",
+                  "value": 1678.41,
+                  "percentile": 58.0
+                },
+                {
+                  "label": "Avg Ride Distance",
+                  "value": 5778.66,
+                  "percentile": 3.0
+                },
+                {
+                  "label": "Longest Kill",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Heals",
+                  "value": 1.0,
+                  "percentile": 94.0
+                },
+                {
+                  "label": "Revives",
+                  "value": 0.0,
+                  "percentile": 100.0
+                },
+                {
+                  "label": "Boosts",
+                  "value": 2.0,
+                  "percentile": 90.0
+                },
+                {
+                  "label": "Damage Dealt",
+                  "value": 248.62,
+                  "percentile": 89.0
+                },
+                {
+                  "label": "DBNOs",
+                  "value": 0.0,
+                  "percentile": 100.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "2": {
       "timestamp": "2017-06-03",
       "season": "2017-pre2",
       "Region": [
@@ -8009,7 +11143,7 @@
       ]
     }
   },
-  "mast0r_D": {
+  "mast0r_d": {
     "1": {
       "timestamp": "2017-06-03",
       "season": "2017-pre2",
@@ -9578,7 +12712,7 @@
       ]
     }
   },
-  "CleverUndSmart": {
+  "cleverundsmart": {
     "1": {
       "timestamp": "2017-06-03",
       "season": "2017-pre2",
@@ -10163,7 +13297,7 @@
       ]
     }
   },
-  "Screemer": {
+  "screemer": {
     "1": {
       "timestamp": "2017-06-03",
       "season": "2017-pre2",
@@ -13547,7 +16681,7 @@
       ]
     }
   },
-  "Gooseman": {
+  "gooseman": {
     "1": {
       "timestamp": "2017-06-03",
       "season": "2017-pre2",
