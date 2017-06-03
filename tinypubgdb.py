@@ -11,8 +11,6 @@ class Tinypubgdb:
         self.matches = ['solo', 'duo', 'squad']
         self.miner = miner
 
-    '''Diese Methode sollte einmal am Tag aufgerufen werden damit neue Stats von Pubgtracker.com abgerufen werden
-    und in der Datenbank aktualisiert werden'''
     def update(self):
         names = self.getsubscribers()
         player_tables = [self.db.table(y) for y in names]
@@ -67,14 +65,14 @@ class Tinypubgdb:
             if self.subs.search((Query().name.lower() == name.lower()) & (Query().active == False)):
                 self.subs.update({'active':True},Query().name.lower() == name.lower())
             elif self.subs.search((Query().name.lower() == name.lower()) & (Query().active == True)):
-                raise Exception('Spieler ist bereits subscribed')
+                raise Exception('Player ' + name + ' already subscribed')
             return
         self.miner.connect()
         res = self.miner.getdata(name)
         data = ujson.loads(res)
         self.miner.close()
         if data['AccountId'] is None:
-            raise NameError('Spielername nicht bei pubgtracker.com vorhanden')
+            raise NameError('playername not existent at pubgtracker.com')
         else:
             self.subs.insert({'name':name.lower(),'AccountId':data['AccountId'],'Avatar':data['Avatar'],'active':True})
             self.update()
@@ -110,7 +108,7 @@ class Tinypubgdb:
         print(self.db.tables())
 
         if player.lower() not in self.db.tables():
-            raise Exception('Spieler ' + player + ' nicht in Datenbank vorhanden')
+            raise Exception('Player ' + player + ' not found in database. \nYou have to subscribe (?subscribe %playername%) first, then statistics are tracked once a day')
             return
 
         p_table = self.db.table(player.lower())
@@ -130,8 +128,8 @@ class Tinypubgdb:
 
     def unsubscribe(self, n):
         if not self.subs.contains(Query().name.lower() == n.lower()):
-            raise Exception('Spieler war nie subscribed')
+            raise Exception('Player ' + n + ' has never been subscribed')
         if self.subs.search((Query().active == False) & (Query().name.lower() == n.lower())):
-            raise Exception('Spieler ist bereits unsubscribed')
-        self.subs.update({'active':False},Query()['name'].lower() == n.lower() )
+            raise Exception('Player ' + n + ' is already unsubscribed')
+        self.subs.update({'active': False}, Query()['name'].lower() == n.lower() )
         return True

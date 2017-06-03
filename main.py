@@ -44,22 +44,22 @@ async def subscribe(name: str):
         stat_db.subscribe(name)
     except Exception as e:
         await bot.say(e)
-    await bot.say(name + ' wurde in die Subscriberliste aufgenommen')
+    await bot.say(name + ' has been subscribed')
 
 @bot.command()
 async def progression(names: str, *params: str):
     if len(params) < 1:
-        text = '''Hilfe: Funktionsaufruf ?progression 
-            Aufruf:   ?progression **players** **match** "**stat**" [*region* *season*]
+        text = '''Help: functioncall ?progression 
+            ?progression **players** **match** "**stat**" [*region* *season*]
 
-            Mögliche Parameter:
-            players = 1 oder mehr Spieler, die subscribed sind (kommaseperiert)
+            possible parameters:
+            players = one or more subscribed players, separated by colon
             region = {0}
             match = {1}                
             seasons = {2}
-            stats <- Achtung Anführungszeichen u.U. notwendig = {3} 
+            "stat" <- if multiple words the quotes are needed = {3} 
 
-            Beispiel: ?progression crazy_,DrDisRespect squad  "Longest Kill"
+            example: ?progression crazy_,DrDisRespect squad  "Longest Kill"
             '''.format(regs, matches, stat_db.getseasons(), allstats)
         await bot.say(text)
         return
@@ -107,7 +107,7 @@ async def progression(names: str, *params: str):
         plt.setp(title_obj, color='w')
         plt.ylabel(stat)
         plt.legend(names)
-        plt.xlabel('Datum')
+        plt.xlabel('Date')
         ax.xaxis.label.set_color('w')
         ax.yaxis.label.set_color('w')
         fig.savefig(path_pic, facecolor=fig.get_facecolor())
@@ -122,7 +122,7 @@ async def unsubscribe(name: str):
     except Exception as e:
         await bot.say(e)
     if worked:
-        await bot.say(name + ' wurde unsubscribed')
+        await bot.say(name + ' is unsubscribed')
 
 @bot.command()
 async def subscribers():
@@ -132,14 +132,14 @@ async def subscribers():
 async def stats(*params: str):
     stat_db.update()
     if len(params) < 2:
-        text = '''Hilfe: Funktionsaufruf ?stats 
-            Aufruf:   ?stats region match "stat" <- Achtung Anführungszeichen u.U. notwendig
-            Mögliche Parameter:
+        text = '''Help: functioncall ?stats 
+            ?stats region match "stat" <- if multiple word the quotes are needed
+            possible parameters:
             region = {0}
             match = {1}                
             stats = {2}
             
-            Beispiel: ?stats agg squad "Longest Kill"
+            example: ?stats agg squad "Longest Kill"
             '''.format(regs, matches, allstats)
         await bot.say(text)
         return
@@ -152,16 +152,16 @@ async def stats(*params: str):
 
     names = stat_db.getsubscribers()
     if stat.lower() not in allstats:
-        await bot.say('geforderter Stat {0} nicht enthalten. Wähle aus diesen hier aus:\n{1}'.format(stat,allstats))
+        await bot.say('queryied Stat {0} not available. Choose one of these:\n{1}'.format(stat,allstats))
         return
     if srv not in regs:
-        await bot.say('Der Server:{0} existiert nicht. Wähle aus diesen Optionen aus.\n{1}'.format(srv,regs))
+        await bot.say('Server :{0} does not exist. Choose one of these.\n{1}'.format(srv,regs))
         return
     if match not in matches:
-        await bot.say('Das Match:{0} existiert nicht. Wähle aus diesen Optionen aus.\n{1}'.format(match,matches))
+        await bot.say('matching :{0} does not exist. Choose one of these.\n{1}'.format(match,matches))
 
 
-    await bot.say('Anfrage wird bearbeitet...')
+    await bot.say('working...')
     seasons = stat_db.getseasons()
     out = "```\n"
     for s in seasons:
@@ -176,7 +176,7 @@ async def stats(*params: str):
 @bot.command()
 async def update():
     stat_db.update()
-    await bot.say('Datenbank auf den neusten Stand gebracht')
+    await bot.say('Database updated')
 
 
 @bot.command()
@@ -188,31 +188,6 @@ async def currentseason():
 async def seasons():
     stat_db.getseasons()
     await bot.say(stat_db.getseasons())
-
-@bot.command(description='For when you wanna settle the score some other way')
-async def choose(*choices : str):
-    """Chooses between multiple choices."""
-    await bot.say(random.choice(choices))
-
-@bot.command()
-async def repeat(times : int, content='repeating...'):
-    """Repeats a message multiple times."""
-    for i in range(times):
-        await bot.say(content)
-
-@bot.command()
-async def joined(member : discord.Member):
-    """Says when a member joined."""
-    await bot.say('{0.name} joined in {0.joined_at}'.format(member))
-
-@bot.group(pass_context=True)
-async def cool(ctx):
-    """Says if a user is cool.
-    In reality this just checks if a subcommand is being invoked.
-    """
-    if ctx.invoked_subcommand is None:
-        await bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
-
 
 def main(argv):
     bot.run(argv[0])
