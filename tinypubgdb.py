@@ -61,10 +61,10 @@ class Tinypubgdb:
         return max([seas['name'] for seas in self.seasons.all()])
 
     def subscribe(self, name):
-        if self.subs.search(Query().name.lower() == name.lower()):
-            if self.subs.search((Query().name.lower() == name.lower()) & (Query().active == False)):
-                self.subs.update({'active':True},Query().name.lower() == name.lower())
-            elif self.subs.search((Query().name.lower() == name.lower()) & (Query().active == True)):
+        if self.subs.search(Query().name == name.lower()):
+            if self.subs.search((Query().name == name.lower()) & (Query().active is False)):
+                self.subs.update({'active': True}, Query().name == name.lower())
+            elif self.subs.search((Query().name == name.lower()) & (Query().active is True)):
                 raise Exception('Player ' + name + ' already subscribed')
             return
         self.miner.connect()
@@ -74,7 +74,10 @@ class Tinypubgdb:
         if data['AccountId'] is None:
             raise NameError('playername not existent at pubgtracker.com')
         else:
-            self.subs.insert({'name':name.lower(),'AccountId':data['AccountId'],'Avatar':data['Avatar'],'active':True})
+            self.subs.insert({'name': name.lower(),
+                              'AccountId': data['AccountId'],
+                              'Avatar': data['Avatar'],
+                              'active': True})
             self.update()
 
     def getsubscribers(self):

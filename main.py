@@ -1,6 +1,4 @@
-import discord
 from discord.ext import commands
-import random
 import matplotlib.pyplot as plt
 import matplotlib
 import tinypubgdb
@@ -21,7 +19,7 @@ def table(players,srv,match,stat,seas):
         table[player] = stat_db.stat(player, srv, match, stat,seas)
     ordered_table = sorted(table, key=table.__getitem__)
     for i, x in enumerate(ordered_table[::-1]):
-        tab.append(extendlength(str(i+1),2) + '. ' + extendlength(x,20) + extendlength(str(table[x]),10))
+        tab.append(extendlength(str(i+1), 2) + '. ' + extendlength(x, 20) + extendlength(str(table[x]), 10))
     return tab
 
 def getseasons(players):
@@ -40,17 +38,17 @@ async def on_ready():
 
 @bot.command()
 async def subscribe(name: str):
-    try:
-        stat_db.subscribe(name)
-    except Exception as e:
-        await bot.say(e)
+    #try:
+    stat_db.subscribe(name)
+    #except Exception as e:
+        #await bot.say(e)
     await bot.say(name + ' has been subscribed')
 
 @bot.command()
-async def progression(names: str, *params: str):
-    if len(params) < 1:
+async def progression(*params: str):
+    if len(params) < 3:
         text = '''Help: functioncall ?progression 
-            ?progression **players** **match** "**stat**" [*region* *season*]
+            ?progression **players** **match** "**stat**" [**region** [**season**]]
 
             possible parameters:
             players = one or more subscribed players, separated by colon
@@ -63,12 +61,15 @@ async def progression(names: str, *params: str):
             '''.format(regs, matches, stat_db.getseasons(), allstats)
         await bot.say(text)
         return
-    elif len(params) >= 4:
-        match, stat, srv, season = params[0], params[1], params[2], params[3]
+    elif len(params) >= 5:
+        srv, season = params[3], params[4]
+    elif len(params) == 4:
+        srv, season = params[3], stat_db.getcurrentseason()
     elif len(params) == 3:
-        match, stat, srv, season = params[0], params[1], params[2], stat_db.getcurrentseason()
-    elif len(params) == 2:
-        match, stat, srv, season = params[0], params[1], 'agg', stat_db.getcurrentseason()
+        srv, season = 'agg', stat_db.getcurrentseason()
+
+    names, match, stat = params[0], params[1], params[2]
+
     path_pic = './pics/' + names.lower() + srv.lower() + match.lower() + stat.lower() + '.png'
 
     print('progression '+names + ' ' + match + ' ' + stat + ' ' + srv + ' ' + season)
