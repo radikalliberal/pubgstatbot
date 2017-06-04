@@ -7,7 +7,7 @@ import Pubgdataminer
 regs = ['eu', 'na', 'as', 'sa', 'agg']
 matches = ['solo', 'duo', 'squad']
 
-stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer('9c4b760c-b8bf-481f-a720-7a5d1c87870c'))
+stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer())
 
 
 def test_1():
