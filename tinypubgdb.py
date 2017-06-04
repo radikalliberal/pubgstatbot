@@ -16,16 +16,17 @@ class Tinypubgdb:
         player_tables = [self.db.table(y) for y in names]
         uptodate = [x.contains(Query().timestamp == str(datetime.date.today())) for x in player_tables]
         self.miner.connect()
-        for utd, name in zip(uptodate,names):
+        for utd, name in zip(uptodate, names):
             if utd:
                 continue
             data = ujson.loads(self.miner.getdata(name))
-            entry = self.build_entry(data)
-            player_table = self.db.table(name.lower(), cache_size=None)
-            player_table.insert(entry)
-            print(entry)
-            if not self.seasons.contains(Query().name == entry['season']):
-                self.seasons.insert({'name':entry['season']})
+            if data['defaultSeason'] == self.getcurrentseason():
+                entry = self.build_entry(data)
+                player_table = self.db.table(name.lower(), cache_size=None)
+                player_table.insert(entry)
+                print(entry)
+                if not self.seasons.contains(Query().name == entry['season']):
+                    self.seasons.insert({'name': entry['season']})
 
         self.miner.close()
 
@@ -84,21 +85,41 @@ class Tinypubgdb:
         return [entry['name'] for entry in self.subs.search(Query().name.matches('.*')) if entry['active']]
 
     def stat(self, player, srv, match, stat, season):
+
+        def getstatfromelem(elem, sr, ma, st):
+            for r in elem['Region']:
+                if r['name'].lower() == sr.lower():
+                    for m in r['match']:
+                        if m['name'].lower() == ma.lower():
+                            for s in m['Stats']:
+                                if s['label'].lower() == st.lower():
+                                    return s['value']
+
+        self.update()
+        vals = []
         p_table = self.db.table(player.lower())
         if len(p_table) < 1:
             return 0
-        entry = dict(p_table.get((Query().timestamp == str(datetime.date.today())) & (Query().season == season)))
-        if entry is None:
-            return 0
-        for r in entry['Region']:
-            if r['name'].lower() == srv.lower():
-                for m in r['match']:
-                    if m['name'].lower() == match.lower():
-                        for s in m['Stats']:
-                            if s['label'].lower() == stat.lower():
-                                return s['value']
-        return 0
+        elem = p_table.get((Query().timestamp == str(datetime.date.today())) & (Query().season == season))
+        entrys = [dict(elem)]
+        if elem.eid > 1:
+            entrys.append(dict(p_table.get(eid=elem.eid-1)))
 
+        for e in entrys:
+            value = getstatfromelem(e, srv, match, stat)
+            if value is None:
+                vals.append(0)
+            else:
+                vals.append(value)
+
+        print(player)
+        print(entrys)
+        print(type(vals))
+        print(vals)
+        if len(vals) > 1:
+            vals.append(vals[0]-vals[1])
+
+        return vals
 
     def progression(self, player, srv, match, stat, season):
 
@@ -116,7 +137,7 @@ class Tinypubgdb:
 
         p_table = self.db.table(player.lower())
         entry = p_table.search((Query().season == season))
-        x, y , y_labels = [], [], []
+        x, y, y_labels = [], [], []
         for e in entry:
             for r in e['Region']:
                 if r['name'].lower() == srv.lower():
@@ -127,12 +148,14 @@ class Tinypubgdb:
                                     x.append(s['value'])
                                     y.append(tointtimestamp(datetime.datetime.strptime(e['timestamp'], '%Y-%m-%d')))
                                     y_labels.append(e['timestamp'])
+        if len(x) < 1 or len(y) < 1 or len(y_labels) < 0:
+            return [0], [0], [0]
         return x, y, y_labels
 
     def unsubscribe(self, n):
-        if not self.subs.contains(Query().name.lower() == n.lower()):
+        if not self.subs.contains(Query().name == n.lower()):
             raise Exception('Player ' + n + ' has never been subscribed')
-        if self.subs.search((Query().active == False) & (Query().name.lower() == n.lower())):
+        if self.subs.search((Query().active == False) & (Query().name == n.lower())):
             raise Exception('Player ' + n + ' is already unsubscribed')
         self.subs.update({'active': False}, Query()['name'].lower() == n.lower() )
         return True

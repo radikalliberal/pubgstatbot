@@ -2,10 +2,12 @@ import tinypubgdb
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
+import Pubgdataminer
 
 regs = ['eu', 'na', 'as', 'sa', 'agg']
 matches = ['solo', 'duo', 'squad']
-stat_db = tinypubgdb.Tinypubgdb('db.json')
+
+stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer('9c4b760c-b8bf-481f-a720-7a5d1c87870c'))
 
 
 def test_1():
@@ -91,10 +93,22 @@ def test_5(names: str, *params: str):
             x_labels.append(x_labels_)
             ax.plot(x_, y_)
 
-        x = np.array(x)
-        x_labels = np.array(x_labels)
-        indices = [x_i for x_i in range(len(x.flatten()))]
-        vals = [x.flatten(), x_labels.flatten()]
+
+        def flatten(x):
+            x_new = []
+            for i in x:
+                for k in i:
+                    x_new.append(k)
+            return x_new
+
+        x = flatten(x)
+        x_labels = flatten(x_labels)
+        print(x)
+        print(y)
+        print(x_labels)
+        indices = [x_i for x_i in range(len(x))]
+        vals = [x, x_labels]
+        print(vals)
         indices.sort(key=vals[0].__getitem__)
         for i, sublist in enumerate(vals):
             vals[i] = [sublist[j] for j in indices]
@@ -111,11 +125,11 @@ def test_5(names: str, *params: str):
         plt.xlabel('Datum')
         ax.xaxis.label.set_color('w')
         ax.yaxis.label.set_color('w')
-        plt.savefig(path_pic, facecolor=fig.get_facecolor())
+        fig.savefig(path_pic, facecolor=fig.get_facecolor())
 
 #test_1()
 #test_2()
 #test_3()
 test_4()
-test_5('crazy_,DrDisRespect,swordo', 'squad', 'kills')
+test_5('crazy_,mast0r_d,swordo', 'squad', 'kills pg')
 

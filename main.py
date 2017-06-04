@@ -8,25 +8,43 @@ import Pubgdataminer
 
 bot = commands.Bot(command_prefix='?')
 
-def table(players,srv,match,stat,seas):
 
-    def extendlength(str, length):
-        return str + (length-len(str)) * ' '
+def table(players, srv, match, stat, seas):
+
+    def extendlength(stri, length, mode=None):
+        if mode == 'right':
+            return (length - len(stri)) * ' ' + stri
+        else:
+            return stri + (length-len(stri)) * ' '
+
 
     table = dict()
     tab = []
+    maxsize = 0
+    maxsize_change = 0
     for player in players:
-        table[player] = stat_db.stat(player, srv, match, stat,seas)
+        table[player] = stat_db.stat(player, srv, match, stat, seas)
+        if len(str(table[player][0])) > maxsize:
+            maxsize = len('{:.2}'.format(table[player][0]*1.0))
+        if len(table[player]) > 1 and len('{:+.2}'.format(table[player][2]*1.0)) > maxsize_change:
+            maxsize_change = len('{:+.2}'.format(table[player][2]*1.0))
+    print(table)
     ordered_table = sorted(table, key=table.__getitem__)
     for i, x in enumerate(ordered_table[::-1]):
-        tab.append(extendlength(str(i+1), 2) + '. ' + extendlength(x, 20) + extendlength(str(table[x]), 10))
+        if len(table[x]) > 1:
+            scores = extendlength('{:.2}'.format(table[x][0]*1.0), maxsize+1, 'right') + ' (' + extendlength('{:+.2}'.format(table[x][2]*1.0), maxsize_change, 'right') + ')'
+        else:
+            scores = extendlength('{:.2}'.format(table[x][0]*1.0), maxsize+1, 'right')
+        tab.append(extendlength(str(i+1), 2) + '. ' + extendlength(x, 20) + scores)
     return tab
+
 
 def getseasons(players):
     seas = []
     for p in players:
         seas = seas + p.agg.seasons
     return sorted(set(seas))
+
 
 @bot.event
 async def on_ready():
@@ -38,16 +56,18 @@ async def on_ready():
 
 @bot.command()
 async def subscribe(name: str):
-    #try:
-    stat_db.subscribe(name)
-    #except Exception as e:
-        #await bot.say(e)
+    print('?subscribe ' + name)
+    try:
+        stat_db.subscribe(name)
+    except Exception as e:
+        await bot.say(e)
     await bot.say(name + ' has been subscribed')
+
 
 @bot.command()
 async def progression(*params: str):
     if len(params) < 3:
-        text = '''Help: functioncall ?progression 
+        text = '''Help: function call ?progression 
             ?progression **players** **match** "**stat**" [**region** [**season**]]
 
             possible parameters:
@@ -72,7 +92,7 @@ async def progression(*params: str):
 
     path_pic = './pics/' + names.lower() + srv.lower() + match.lower() + stat.lower() + '.png'
 
-    print('progression '+names + ' ' + match + ' ' + stat + ' ' + srv + ' ' + season)
+    print('?progression '+names + ' ' + match + ' ' + stat + ' ' + srv + ' ' + season)
 
     with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
         fig, ax = plt.subplots(nrows=1, ncols=1)
@@ -91,10 +111,17 @@ async def progression(*params: str):
                 await bot.say(e)
 
         names = [n for n in names if n is not None]
-        x = np.array(x)
-        x_labels = np.array(x_labels)
-        indices = [x_i for x_i in range(len(x.flatten()))]
-        vals = [x.flatten(), x_labels.flatten()]
+        def flatten(x):
+            x_new = []
+            for i in x:
+                for k in i:
+                    x_new.append(k)
+            return x_new
+
+        x = flatten(x)
+        x_labels = flatten(x_labels)
+        indices = [x_i for x_i in range(len(x))]
+        vals = [x, x_labels]
         indices.sort(key=vals[0].__getitem__)
         for i, sublist in enumerate(vals):
             vals[i] = [sublist[j] for j in indices]
@@ -115,8 +142,10 @@ async def progression(*params: str):
 
     await bot.upload(path_pic)
 
+
 @bot.command()
 async def unsubscribe(name: str):
+    print('?unsubscribe ' + name)
     worked = False
     try:
         worked = stat_db.unsubscribe(name)
@@ -125,13 +154,15 @@ async def unsubscribe(name: str):
     if worked:
         await bot.say(name + ' is unsubscribed')
 
+
 @bot.command()
 async def subscribers():
+    print('?subscribers')
     await bot.say(str(stat_db.getsubscribers()))
+
 
 @bot.command()
 async def stats(*params: str):
-    stat_db.update()
     if len(params) < 2:
         text = '''Help: functioncall ?stats 
             ?stats region match "stat" <- if multiple word the quotes are needed
@@ -150,6 +181,7 @@ async def stats(*params: str):
     elif len(params) == 2:
         srv, match, stat = 'agg', params[0], params[1]
 
+    print('?stats ' + srv + ' ' + match + ' ' + stat)
 
     names = stat_db.getsubscribers()
     if stat.lower() not in allstats:
@@ -161,34 +193,38 @@ async def stats(*params: str):
     if match not in matches:
         await bot.say('matching :{0} does not exist. Choose one of these.\n{1}'.format(match,matches))
 
-
     await bot.say('working...')
     seasons = stat_db.getseasons()
     out = "```\n"
     for s in seasons:
         out = out + s + '\n-------------------------\n'
-        t = table(names,srv,match,stat,s)
+        t = table(names, srv, match, stat, s)
         for entry in t:
             out = out + entry + '\n'
         out = out + '\n'
 
     await bot.say('Ranking - ' + match + ' - ' + stat + '\n' + out + '```')
 
+
 @bot.command()
 async def update():
+    print('?update')
     stat_db.update()
     await bot.say('Database updated')
 
 
 @bot.command()
 async def currentseason():
+    print('?currentseason')
     await bot.say(stat_db.getcurrentseason())
 
-@bot.command()
 
+@bot.command()
 async def seasons():
+    print('?seasons')
     stat_db.getseasons()
     await bot.say(stat_db.getseasons())
+
 
 def main(argv):
     bot.run(argv[0])
