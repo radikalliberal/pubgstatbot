@@ -3,14 +3,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 import Pubgdataminer
+import sys
 
 regs = ['eu', 'na', 'as', 'sa', 'agg']
 matches = ['solo', 'duo', 'squad']
 
-stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer())
 
 
-def test_1():
+
+def test_1(stat_db):
     try:
         stat_db.unsubscribe('DrDisRespect')
     except Exception as e:
@@ -27,16 +28,16 @@ def test_1():
 
 
 
-def test_2():
+def test_2(stat_db):
     stat_db.update()
     erg = stat_db.progression('crazy_', 'agg', 'squad', 'kills', '2017-pre2')
     print(erg)
 
-def test_3():
+def test_3(stat_db):
     stat_db.update()
     print(stat_db.getseasons())
 
-def test_4():
+def test_4(stat_db):
     x = [1,2]
     y = [1,2]
     x_labels = ['123','234']
@@ -127,9 +128,16 @@ def test_5(names: str, *params: str):
         ax.yaxis.label.set_color('w')
         fig.savefig(path_pic, facecolor=fig.get_facecolor())
 
+def test_6(stat_db):
+    print(stat_db.stat('crazy_', 'agg', 'squad', 'speed', '2017-pre2'))
+
 #test_1()
 #test_2()
 #test_3()
-test_4()
-test_5('crazy_,mast0r_d,swordo', 'squad', 'kills pg')
+#test_4()
+#test_5('crazy_,mast0r_d,swordo', 'squad', 'kills pg')
 
+
+if __name__ == '__main__':
+    stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
+    test_6(stat_db)
