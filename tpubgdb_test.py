@@ -1,6 +1,6 @@
 import tinypubgdb
 import matplotlib.pyplot as plt
-import numpy as np
+import ujson
 import matplotlib
 import Pubgdataminer
 import sys
@@ -131,6 +131,47 @@ def test_5(names: str, *params: str):
 def test_6(stat_db):
     print(stat_db.stat('crazy_', 'agg', 'squad', 'speed', '2017-pre2'))
 
+def test_7(stat_db):
+    stat_db.miner.connect()
+    data = ujson.loads(stat_db.miner.getdata('crazy_'))
+    entry1 = stat_db.build_entry(data)
+    data = ujson.loads(stat_db.miner.getdata('swordo'))
+    entry2 = stat_db.build_entry(data)
+    print(entry2)
+
+def build_new_db(stat_db,new_stat_db):
+
+    subs = stat_db.getsubscribers()
+    for s in subs:
+        entry = dict()
+        entry['season'] = '2017-pre2'
+        entry['match'] = []
+        for m in stat_db.matches:
+            match = dict()
+            match['name'] = m
+            match['stat'] = []
+            for st in stat_db.allstats:
+                stat = stat_db.convertstat(s, 'agg', m, st, '2017-pre2')
+                stat['name'] = st
+                match['stat'].append(stat)
+            entry['match'].append(match)
+
+        player_table = new_stat_db.db.table(s.lower(), cache_size=None)
+        player_table.insert(entry)
+
+import datetime
+
+def test_new_db(stat_db):
+    print(stat_db.update())
+    entry = dict(stat_db.stat('crazy_', 'solo', 'k/d ratio', '2017-pre2'))
+    del entry['name']
+    for key in sorted(entry, reverse=True):
+        print(key)
+    #print(stat_db.progression2('crazy_','solo','k/d ratio','2017-pre2'))
+
+
+
+
 #test_1()
 #test_2()
 #test_3()
@@ -140,4 +181,6 @@ def test_6(stat_db):
 
 if __name__ == '__main__':
     stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
-    test_6(stat_db)
+    new_stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
+    #build_new_db(stat_db, new_stat_db)
+    test_new_db(new_stat_db)

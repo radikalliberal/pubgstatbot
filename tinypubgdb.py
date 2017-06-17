@@ -15,14 +15,14 @@ class Tinypubgdb:
         self.regs = ['eu', 'na', 'as', 'sa', 'agg']
         self.matches = ['solo', 'duo', 'squad']
         self.miner = miner
-        self.statidx = {'k/d ratio': 1,
-                        'win %': 2,
-                        'time survived': 3,
-                        'rounds played': 4,
-                        'wins': 5,
+        self.statidx = {'k/d ratio': 0,
+                        'win %': 1,
+                        'time survived': 2,
+                        'rounds played': 3,
+                        'wins': 4,
                         'win top 10 ratio': 5,
                         'top 10s': 6,
-                        'top 10 ratio': 7,
+                        'top 10 rate': 7,
                         'losses': 8,
                         'rating': 9,
                         'best rating': 10,
@@ -68,58 +68,54 @@ class Tinypubgdb:
                         'rambo score': 50,
                         'kills per hour': 51,
                         'damage per kill': 52}
-        self.allstats = [x.lower() for x in ['K/D Ratio', 'Win %', 'Time Survived', 'Rounds Played', 'Wins', 'Win Top 10 Ratio', 'Top 10s', 'Top 10 Ratio', 'Losses', 'Rating', 'Best Rating', 'Damage Pg', 'Headshot Kills Pg', 'Heals Pg', 'Kills Pg', 'Move Distance Pg', 'Revives Pg', 'Road Kills Pg', 'Team Kills Pg', 'Time Survived Pg', 'Top 10s Pg', 'Kills', 'Assists', 'Suicides', 'Team Kills', 'Headshot Kills', 'Headshot Kill Ratio', 'Vehicle Destroys', 'Road Kills', 'Daily Kills', 'Weekly Kills', 'Round Most Kills', 'Max Kill Streaks', 'Days', 'Longest Time Survived', 'Most Survival Time', 'Avg Survival Time', 'Win Points', 'Walk Distance', 'Ride Distance', 'Move Distance', 'Avg Walk Distance', 'Avg Ride Distance', 'Longest Kill', 'Heals', 'Revives', 'Boosts', 'Damage Dealt', 'Knock outs', 'speed', 'rambo score', 'kills per hour', 'damage per kill']]
+        self.allstats = [x.lower() for x in ['K/D Ratio', 'Win %', 'Time Survived', 'Rounds Played', 'Wins', 'Win Top 10 Ratio', 'Top 10s', 'Top 10 Rate', 'Losses', 'Rating', 'Best Rating', 'Damage Pg', 'Headshot Kills Pg', 'Heals Pg', 'Kills Pg', 'Move Distance Pg', 'Revives Pg', 'Road Kills Pg', 'Team Kills Pg', 'Time Survived Pg', 'Top 10s Pg', 'Kills', 'Assists', 'Suicides', 'Team Kills', 'Headshot Kills', 'Headshot Kill Ratio', 'Vehicle Destroys', 'Road Kills', 'Daily Kills', 'Weekly Kills', 'Round Most Kills', 'Max Kill Streaks', 'Days', 'Longest Time Survived', 'Most Survival Time', 'Avg Survival Time', 'Win Points', 'Walk Distance', 'Ride Distance', 'Move Distance', 'Avg Walk Distance', 'Avg Ride Distance', 'Longest Kill', 'Heals', 'Revives', 'Boosts', 'Damage Dealt', 'Knock outs']]
         self.regs = ['eu', 'na', 'as', 'sa', 'agg']
         self.matches = ['solo', 'duo', 'squad']
+        self.uptodate = self.checkuptodate()
 
-    def update(self, forced=False):
+    @staticmethod
+    def tointtimestamp(dt):
+        epoch = datetime.datetime(1970, 1, 1, tzinfo=None)
+        integer_timestamp = (dt - epoch) // datetime.timedelta(days=1)
+        return integer_timestamp
+
+    def checkuptodate(self):
         names = self.getsubscribers()
         player_tables = [self.db.table(y) for y in names]
-        uptodate = [x.contains(Query().timestamp == str(datetime.date.today())) for x in player_tables]
+        uptodate_ = [dict(x.get(Query().season == self.getcurrentseason())) for x in player_tables]
+        value = [str(self.tointtimestamp(datetime.datetime.today())) in x['match'][0]['stat'][0] for x in uptodate_]
+        self.uptodate = value
+        return value
+
+    def update(self, forced=False):
+
+        names = self.getsubscribers()
         self.miner.connect()
-        for utd, name in zip(uptodate, names):
+        for utd, name in zip(self.uptodate, names):
             if utd and not forced:
                 continue
 
+            player_table = self.db.table(name.lower(), cache_size=None)
             data = ujson.loads(self.miner.getdata(name))
 
             if data['defaultSeason'] == self.getcurrentseason():
-                entry = self.build_entry(data)
-                player_table = self.db.table(name.lower(), cache_size=None)
-                if utd and forced:
-                    elem = player_table.get(Query().timestamp == str(datetime.date.today()))
-                    player_table.remove(eids=[elem.eid])
-
+                elem = player_table.get(Query().season == self.getcurrentseason())
+                entry = self.build_entry(data, elem)
+                player_table.remove(eids=[elem.eid])
                 player_table.insert(entry)
-                if not self.seasons.contains(Query().name == entry['season']):
-                    self.seasons.insert({'name': entry['season']})
+
         self.miner.close()
 
+    def build_entry(self, json_obj, elem):
 
-    def build_entry(self, json_obj):
-        temp = dict()
-        temp['timestamp'] = str(datetime.date.today())
-        temp['season'] = json_obj['defaultSeason']
-        temp['Region'] = []
-        for r in self.regs:
-            region = dict()
-            region['name'] = r
-            region['match'] = []
-            for m in self.matches:
-                match = dict()
-                match['name'] = m
-                match['Stats'] = []
-                for st in json_obj['Stats']:
+        for m in elem['match']:
+            for st_json in json_obj['Stats']:
+                if st_json['Region'] == 'agg' and st_json['Season'] == self.getcurrentseason() and st_json['Match'] == m['name']:
+                    for st_json_agg in st_json['Stats']:
+                        tstamp = str(self.tointtimestamp(datetime.datetime.today()))
+                        m['stat'][self.statidx[st_json_agg['label'].lower()]][tstamp] = float(st_json_agg['value'])
 
-                    if st['Region'] == r and st['Season'] == json_obj['defaultSeason'] and st['Match'] == m:
-                        for stat in st['Stats']:
-                            s = {'label': stat['label'], 'value': float(stat['value']),
-                                 'percentile': stat['percentile']}
-                            match['Stats'].append(s)
-                region['match'].append(match)
-            temp['Region'].append(region)
-
-        return temp
+        return elem
 
     def getseasons(self):
         return [seas['name'] for seas in self.seasons.all()]
@@ -145,99 +141,19 @@ class Tinypubgdb:
                               'AccountId': data['AccountId'],
                               'Avatar': data['Avatar'],
                               'active': True})
+            player_table = self.db.table(name.lower(), cache_size=None)
+            elem = {'season': self.getcurrentseason()}
+            elem['match'] = []
+            for m in self.matches:
+                match = dict()
+                match['name'] = m
+                match['stat'] = []
+                for st in self.allstats:
+                    stat = {'name': st}
+                    match['stat'].append(stat)
+                elem['match'].append(match)
+            player_table.insert(elem)
             self.update()
-
-    def getsubscribers(self):
-        return [entry['name'] for entry in self.subs.search(Query().name.matches('.*')) if entry['active']]
-
-    def stat(self, player, srv, match, stat, season):
-
-        def getstatfromelem(elem, sr, ma, st):
-            for r in elem['Region']:
-                if r['name'].lower() == sr.lower():
-                    for m in r['match']:
-                        if m['name'].lower() == ma.lower():
-                            return m['Stats'][self.statidx[st.lower()]]['value']
-            raise NoDataError('No Data for ' + st)
-
-        self.update()
-        vals = []
-        p_table = self.db.table(player.lower())
-        if len(p_table) < 1:
-            return 0
-        elem = p_table.get((Query().timestamp == str(datetime.date.today())) & (Query().season == season))
-        entrys = [dict(elem)]
-        if elem.eid > 1:
-            for i in range(elem.eid-1):
-                if p_table.contains(eids=[elem.eid-i-1]):
-                    entrys.append(dict(p_table.get(eid=elem.eid-i-1)))
-                    break
-
-        for e in entrys:
-            if stat.lower() == "speed":  # in km/h
-                distance = getstatfromelem(e, srv, match, "walk distance")
-                time = getstatfromelem(e, srv, match, "time survived")
-                time_on_ride = getstatfromelem(e, srv, match, "ride distance") / 80  # km/h
-                value = (distance * 3.6) / (time - time_on_ride)
-
-            elif stat.lower() == "rambo score":
-                distance = getstatfromelem(e, srv, match, "walk distance")
-                time = getstatfromelem(e, srv, match, "time survived")
-                time_on_ride = getstatfromelem(e, srv, match, "ride distance") / 80  # km/h
-                kills = getstatfromelem(e, srv, match, "kills")
-                value = ((distance / 1000) * kills) / (((time - time_on_ride) / 3600) * (time / 3600))
-
-            elif stat.lower() == "kills per hour":
-                time = getstatfromelem(e, srv, match, "time survived")
-                kills = getstatfromelem(e, srv, match, "kills")
-                value = kills / (time / 3600)
-
-            elif stat.lower() == "damage per kill":
-                damage = getstatfromelem(e, srv, match, "damage dealt")
-                kills = getstatfromelem(e, srv, match, "kills")
-                value = damage / kills
-
-            else:
-                value = getstatfromelem(e, srv, match, stat)
-
-            if value is None:
-                vals.append(0)
-            else:
-                vals.append(value)
-
-        if len(vals) > 1:
-            vals.append(vals[0]-vals[1])
-
-        return vals
-
-    def progression(self, player, srv, match, stat, season):
-
-        def tointtimestamp(dt):
-            naive = dt.replace(tzinfo=None)
-            epoch = datetime.datetime(1970, 1, 1, tzinfo=None)
-            integer_timestamp = (naive - epoch) // datetime.timedelta(days=1)
-            return integer_timestamp
-
-        if player.lower() not in self.db.tables():
-            raise Exception('Player ' + player + ' not found in database. \nYou have to subscribe (?subscribe %playername%) first, then statistics are tracked once a day')
-            return
-
-        p_table = self.db.table(player.lower())
-        entry = p_table.search((Query().season == season))
-        x, y, y_labels = [], [], []
-        for e in entry:
-            for r in e['Region']:
-                if r['name'].lower() == srv.lower():
-                    for m in r['match']:
-                        if m['name'].lower() == match.lower():
-                            if len(m) < 1:
-                                continue
-                            x.append(m['Stats'][self.statidx[stat.lower()]]['value'])
-                            y.append(tointtimestamp(datetime.datetime.strptime(e['timestamp'], '%Y-%m-%d')))
-                            y_labels.append(e['timestamp'])
-        if len(x) < 1 or len(y) < 1 or len(y_labels) < 1:
-            raise NoDataError
-        return x, y, y_labels
 
     def unsubscribe(self, n):
         if not self.subs.contains(Query().name == n.lower()):
@@ -246,3 +162,94 @@ class Tinypubgdb:
             raise Exception('Player ' + n + ' is already unsubscribed')
         self.subs.update({'active': False}, Query()['name'].lower() == n.lower() )
         return True
+
+    def getsubscribers(self):
+        return [entry['name'] for entry in self.subs.search(Query().name.matches('.*')) if entry['active']]
+
+    def convertstat(self, player, srv, match, stat, season):
+
+        def getstatfromelem(elem, sr, ma, st):
+            for r in elem['Region']:
+                if r['name'].lower() == sr.lower():
+                    for m in r['match']:
+                        if m['name'].lower() == ma.lower():
+                            if len(m['Stats']) > 0:
+                                return m['Stats'][self.statidx[st.lower()]]['value']
+
+        p_table = self.db.table(player.lower())
+        if len(p_table) < 1:
+            return 0
+        entrys = p_table.search(Query().season == season)
+
+        vals = {}
+        for e in entrys:
+            value = getstatfromelem(e, srv, match, stat)
+            if value is not None:
+                vals[str(self.tointtimestamp(datetime.datetime.strptime(e['timestamp'], '%Y-%m-%d')))] = value
+
+        return vals
+
+    def stat(self, player, match, stat, season):
+
+        #todo extra stats
+        ''' if stat.lower() == "speed":  # in km/h
+            distance = getstatfromelem(e, srv, match, "walk distance")
+            time = getstatfromelem(e, srv, match, "time survived")
+            time_on_ride = getstatfromelem(e, srv, match, "ride distance") / 80  # km/h
+            value = (distance * 3.6) / (time - time_on_ride)
+
+        elif stat.lower() == "rambo score":
+            distance = getstatfromelem(e, srv, match, "walk distance")
+            time = getstatfromelem(e, srv, match, "time survived")
+            time_on_ride = getstatfromelem(e, srv, match, "ride distance") / 80  # km/h
+            kills = getstatfromelem(e, srv, match, "kills")
+            value = ((distance / 1000) * kills) / (((time - time_on_ride) / 3600) * (time / 3600))
+
+        elif stat.lower() == "kills per hour":
+            time = getstatfromelem(e, srv, match, "time survived")
+            kills = getstatfromelem(e, srv, match, "kills")
+            value = kills / (time / 3600)
+
+        elif stat.lower() == "damage per kill":
+            damage = getstatfromelem(e, srv, match, "damage dealt")
+            kills = getstatfromelem(e, srv, match, "kills")
+            value = damage / kills'''
+
+        def getstatfromelem(elem, ma, st):
+            for m in elem['match']:
+                if m['name'] == ma:
+                    return m['stat'][self.statidx[st]]
+            return None
+
+        p_table = self.db.table(player.lower())
+        if len(p_table) < 1:
+            return 0
+        elem = p_table.get(Query().season == season)
+        values = getstatfromelem(elem, match, stat)
+        del values['name']
+
+        return values
+
+    def progression(self, player, match, stat, season):
+        if player.lower() not in self.db.tables():
+            raise Exception('Player ' + player + ' not found in database. \nYou have to subscribe (?subscribe %playername%) first, then statistics are tracked once a day')
+            return
+
+        p_table = self.db.table(player.lower())
+        entry = p_table.get((Query().season == season))
+        x, y, y_labels = [], [], []
+        for m in entry['match']:
+            if m['name'].lower() == match.lower():
+                if len(m['stat']) < 1:
+                    continue
+
+                stats = self.stat(player, match, stat, season)
+                x = [v for k, v in stats.items()]
+                y = [int(k) for k, v in stats.items()]
+                y_labels = [datetime.datetime.fromtimestamp(int(k)*24*60*60).strftime('%Y-%m-%d') for k, v in stats.items()]
+
+        if len(x) < 1 or len(y) < 1 or len(y_labels) < 1:
+            raise NoDataError
+        return x, y, y_labels
+
+

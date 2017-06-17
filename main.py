@@ -4,13 +4,12 @@ import matplotlib
 import tinypubgdb
 import sys
 import Pubgdataminer
-import random
 import copy
 
 bot = commands.Bot(command_prefix='?')
 
 
-def table(players, srv, match, stat, seas):
+def table(players, match, stat, seas):
 
     def extendlength(stri, length, mode=None):
         if mode == 'right':
@@ -25,7 +24,15 @@ def table(players, srv, match, stat, seas):
     maxsize_change = 0
     for player in players:
         try:
-            table[player] = stat_db.stat(player, srv, match, stat, seas)
+            entry = stat_db.stat(player, match, stat, seas)
+            vals = []
+            for key in sorted(entry, reverse=True):
+                vals.append(entry[key])
+                if len(vals) > 1:
+                    vals.append(vals[0]-vals[1])
+                    break
+
+            table[player] = vals
         except Exception as e:
             print(e)
             table[player] = [0]
@@ -41,19 +48,12 @@ def table(players, srv, match, stat, seas):
             scores = extendlength('{:.2f}'.format(table[x][0]*1.0), maxsize+1, 'right') + ' (' + extendlength('{:+.2f}'.format(table[x][2]*1.0), maxsize_change, 'right') + ')'
         else:
             scores = extendlength('{:.2f}'.format(table[x][0]*1.0), maxsize+1, 'right')
-        tab.append(extendlength(str(i+1), 2) + '. ' + extendlength(x, 20) + scores)
+        tab.append(extendlength(str(i+1), 2, 'right') + '. ' + extendlength(x, 20) + scores)
     return tab
-
-
-def getseasons(players):
-    seas = []
-    for p in players:
-        seas = seas + p.agg.seasons
-    return sorted(set(seas))
-
 
 @bot.event
 async def on_ready():
+    stat_db.checkuptodate()
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
@@ -63,6 +63,7 @@ async def on_ready():
 @bot.command()
 async def subscribe(name: str):
     print('?subscribe ' + name)
+    stat_db.checkuptodate()
     try:
         stat_db.subscribe(name)
     except Exception as e:
@@ -74,17 +75,16 @@ async def subscribe(name: str):
 async def progression(*params: str):
     if len(params) < 2:
         text = '''```Help: function call ?progression 
-            ?progression players "stat" [match [region [season]]]
+            ?progression players "stat" [match [season]]
 
             possible parameters:
             players = one or more subscribed players, separated by colon
-            region = {0}
-            match = {1}                
-            seasons = {2}
-            "stat" <- if multiple words the quotes are needed = {3} 
+            match = {0}                
+            seasons = {1}
+            "stat" <- if multiple words the quotes are needed = {2} 
 
             example: ?progression crazy_,DrDisRespect squad  "Longest Kill"
-            ```'''.format(stat_db.regs, stat_db.matches, stat_db.getseasons(), stat_db.allstats)
+            ```'''.format(stat_db.matches, stat_db.getseasons(), stat_db.allstats)
         await bot.say(text)
         return
     elif len(params) >= 5:
@@ -97,12 +97,7 @@ async def progression(*params: str):
         match, srv, season = ['solo', 'duo', 'squad'], 'agg', stat_db.getcurrentseason()
 
     names, stat = params[0], params[1]
-
-    if stat.lower() == 'penis':
-        bot.say("No progress for penis, still short ...")
-        return
-
-
+    stat_db.checkuptodate()
 
     print('?progression '+names + ' ' + str(match) + ' ' + stat + ' ' + srv + ' ' + season)
     names = names.split(',')
@@ -111,24 +106,23 @@ async def progression(*params: str):
         names_for_match = copy.deepcopy(names)
 
         path_pic = './pics/' + str(names_for_match).lower() + srv.lower() + str(m).lower() + stat.lower() + '.png'
-        #path_pic = './pics/tmp.png'
+        path_pic = path_pic.replace('/', '')
         with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
-            fig, ax = plt.subplots(nrows=1, ncols=1)
+            fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 7))
 
             x, y, x_labels = [], [], []
 
             for i, name in enumerate(names_for_match):
                 try:
-                    y_, x_, x_labels_ = stat_db.progression(name, srv, m, stat, season)
+                    y_, x_, x_labels_ = stat_db.progression(name, m, stat, season)
 
-                    if 0 not in x_ and len(x_) > 1:
+                    if 0 not in x_ and not len(x_) < 1:
                         # Todo: That can be done better
                         x.append(x_)
                         y.append(y_)
                         x_labels.append(x_labels_)
                         ax.plot(x_, y_)
-                    else:
-                        names_for_match[i] = None
+
                 except Exception as e:
                     names_for_match[i] = None
                     await bot.say('No Data for {}/{}/{}/{}/{} Error: {}'.format(name, srv, m, stat, season, str(e)))
@@ -214,7 +208,7 @@ async def stats(*params: str):
         match2 = match2 + ',' + m
 
     print('?stats ' + srv + ' ' + match2 + ' ' + stat)
-
+    stat_db.checkuptodate()
     names = stat_db.getsubscribers()
     if stat.lower() not in stat_db.allstats:
         await bot.say('queryied Stat {0} not available. Choose one of these:\n{1}'.format(stat, stat_db.allstats))
@@ -232,7 +226,7 @@ async def stats(*params: str):
         for s in seasons:
 
                 out = out + s + '\n------------------------------------------\n'
-                t = table(names, srv, m, stat, s)
+                t = table(names, m, stat, s)
                 for entry in t:
                         out = out + entry + '\n'
                 out = out + '\n'
@@ -243,10 +237,15 @@ async def stats(*params: str):
 @bot.command()
 async def update(*forced: str):
     await bot.say('working...')
+    stat_db.checkuptodate()
     print('?update {}'.format(forced))
-    if forced[0] == 'force':
-        stat_db.update(forced=True)
-        await bot.say('Database update forced')
+    if len(forced) == 1:
+        if forced[0] == 'force':
+            stat_db.update(forced=True)
+            await bot.say('Database update forced')
+        else:
+            await bot.say('use either "?update" or "?update force"\
+                                    \n force does overwrite the last capture from today with new data if available')
     elif len(forced) > 1:
         await bot.say('use either "?update" or "?update force"\
                         \n force does overwrite the last capture from today with new data if available')
@@ -267,9 +266,26 @@ async def seasons():
     stat_db.getseasons()
     await bot.say(stat_db.getseasons())
 
+
+#@bot.command()
+#async def help():
+#    print('?help')
+#    await bot.say('''```
+#    Avalilable Commands:
+#        ?subscribe
+#        ?unsubscribe
+#        ?subscribers
+#        ?progression
+#        ?stats
+#        ?currentseason
+#        ?seasons
+#        ?update
+#    ```''')
+
+
 if __name__ == '__main__':
 
-    stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
+    stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
     stat_db.update()
     bot.run(sys.argv[1])
 
