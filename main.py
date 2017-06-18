@@ -10,7 +10,7 @@ import asyncio
 import numpy as np
 
 bot = commands.Bot(command_prefix='?')
-stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
+stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
 
 
 def table(players, match, stat, seas):
@@ -70,13 +70,13 @@ async def autoupdate():
         await asyncio.sleep(60 * 60)
         stat_db.checkuptodate()
         stat_db.update(forced=True)
-        #await bot.say('updated Database')
+        channel = discord.Object(id=298511485494231050)
         print('autoupdate')
         for m in stat_db.matches:
             msgs = stat_db.lookatrankings(m, stat_db.getcurrentseason())
             for msg in msgs:
                 print(msg)
-                await bot.say(msg)
+                await bot.send_message(channel, msg)
 
 
 
