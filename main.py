@@ -67,7 +67,7 @@ async def on_ready():
 async def autoupdate():
     await bot.wait_until_ready()
     while not bot.is_closed:
-        await asyncio.sleep(60 * 60)
+        await asyncio.sleep(60*60)
         stat_db.checkuptodate()
         stat_db.update(forced=True)
         channel = discord.Object(id=298511485494231050)
@@ -316,7 +316,7 @@ async def seasons():
 
 if __name__ == '__main__':
     stat_db.update()
-    bot.loop.create_task(autoupdate())
+    #bot.loop.create_task(autoupdate())
     bot.run(sys.argv[1])
 
 
