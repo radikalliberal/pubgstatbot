@@ -1,12 +1,16 @@
 from discord.ext import commands
+import discord
 import matplotlib.pyplot as plt
 import matplotlib
 import tinypubgdb
 import sys
 import Pubgdataminer
 import copy
+import asyncio
+import numpy as np
 
 bot = commands.Bot(command_prefix='?')
+stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
 
 
 def table(players, match, stat, seas):
@@ -16,7 +20,6 @@ def table(players, match, stat, seas):
             return (length - len(stri)) * ' ' + stri
         else:
             return stri + (length-len(stri)) * ' '
-
 
     table = dict()
     tab = []
@@ -51,6 +54,7 @@ def table(players, match, stat, seas):
         tab.append(extendlength(str(i+1), 2, 'right') + '. ' + extendlength(x, 20) + scores)
     return tab
 
+
 @bot.event
 async def on_ready():
     stat_db.checkuptodate()
@@ -60,18 +64,53 @@ async def on_ready():
     print('------')
 
 
+async def autoupdate():
+    await bot.wait_until_ready()
+    while not bot.is_closed:
+        await asyncio.sleep(60 * 60)
+        stat_db.checkuptodate()
+        stat_db.update(forced=True)
+        #await bot.say('updated Database')
+        print('autoupdate')
+        for m in stat_db.matches:
+            msgs = stat_db.lookatrankings(m, stat_db.getcurrentseason())
+            for msg in msgs:
+                print(msg)
+                await bot.say(msg)
+
+
+
 @bot.command()
+async def joined(member: discord.Member):
+    print('{0.name} joined in {0.joined_at}'.format(member))
+    """Says when a member joined."""
+    await bot.say('{0.name} joined in {0.joined_at}'.format(member))
+
+
+@bot.command(description='use to subscribe a player to the database to track stats')
 async def subscribe(name: str):
     print('?subscribe ' + name)
-    stat_db.checkuptodate()
     try:
         stat_db.subscribe(name)
+        stat_db.checkuptodate()
+        stat_db.update()
+        await bot.say(name + ' has been subscribed')
     except Exception as e:
         await bot.say(e)
-    await bot.say(name + ' has been subscribed')
 
 
-@bot.command()
+
+@bot.command(description='''draw graph of player performance over time for a specific stat
+
+            ?progression players "stat" [match [season]]
+            possible parameters:
+            players = one or more subscribed players, separated by colon
+            match = {0}                
+            seasons = {1}
+            "stat" <- if multiple words the quotes are needed = {2} 
+
+            example: ?progression crazy_,DrDisRespect squad  "Longest Kill"
+            '''.format(stat_db.matches, stat_db.getseasons(), stat_db.allstats))
 async def progression(*params: str):
     if len(params) < 2:
         text = '''```Help: function call ?progression 
@@ -105,8 +144,7 @@ async def progression(*params: str):
     for m in match:
         names_for_match = copy.deepcopy(names)
 
-        path_pic = './pics/' + str(names_for_match).lower() + srv.lower() + str(m).lower() + stat.lower() + '.png'
-        path_pic = path_pic.replace('/', '')
+        path_pic = './pics/' + (str(names_for_match).lower() + srv.lower() + str(m).lower() + stat.lower() + '.png').replace('/', '')
         with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
             fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 7))
 
@@ -163,7 +201,7 @@ async def progression(*params: str):
         await bot.upload(path_pic)
 
 
-@bot.command()
+@bot.command(description='stop tracking a subscribed player, existing data will not be deleted')
 async def unsubscribe(name: str):
     print('?unsubscribe ' + name)
     worked = False
@@ -175,13 +213,22 @@ async def unsubscribe(name: str):
         await bot.say(name + ' is unsubscribed')
 
 
-@bot.command()
+@bot.command(description='list all subscribed Players')
 async def subscribers():
     print('?subscribers')
     await bot.say(str(stat_db.getsubscribers()))
 
 
-@bot.command()
+@bot.command(description='''show ranking of all subscribed players for a specific stat
+
+            ?stats "stat" [match [region]]   
+            possible parameters:
+            region = {0}
+            match = {1}                
+            stats <- if multiple words the quotes are needed = {2}
+            
+            example: ?stats "Longest Kill" squad eu
+            '''.format(stat_db.regs, stat_db.matches, stat_db.allstats))
 async def stats(*params: str):
     if len(params) < 1:
         text = '''```Help: functioncall ?stats 
@@ -191,7 +238,7 @@ async def stats(*params: str):
             match = {1}                
             stats <- if multiple words the quotes are needed = {2}
             
-            example: ?stats agg squad "Longest Kill"
+            example: ?stats "Longest Kill" squad eu
             ```'''.format(stat_db.regs, stat_db.matches, stat_db.allstats)
         await bot.say(text)
         return
@@ -234,7 +281,7 @@ async def stats(*params: str):
         await bot.say('Ranking - ' + m + ' - ' + stat + '\n' + out + '```')
 
 
-@bot.command()
+@bot.command(description='update the database, use "?update force" to overwrite the last update with newer numbers for the day')
 async def update(*forced: str):
     await bot.say('working...')
     stat_db.checkuptodate()
@@ -254,39 +301,22 @@ async def update(*forced: str):
         await bot.say('Database updated')
 
 
-@bot.command()
+@bot.command(description='returns the current season for pubg')
 async def currentseason():
     print('?currentseason')
     await bot.say(stat_db.getcurrentseason())
 
 
-@bot.command()
+@bot.command(description='returns all seasons tracked in the database')
 async def seasons():
     print('?seasons')
     stat_db.getseasons()
     await bot.say(stat_db.getseasons())
 
 
-#@bot.command()
-#async def help():
-#    print('?help')
-#    await bot.say('''```
-#    Avalilable Commands:
-#        ?subscribe
-#        ?unsubscribe
-#        ?subscribers
-#        ?progression
-#        ?stats
-#        ?currentseason
-#        ?seasons
-#        ?update
-#    ```''')
-
-
 if __name__ == '__main__':
-
-    stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
     stat_db.update()
+    bot.loop.create_task(autoupdate())
     bot.run(sys.argv[1])
 
 

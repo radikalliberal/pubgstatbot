@@ -68,7 +68,7 @@ class Tinypubgdb:
                         'rambo score': 50,
                         'kills per hour': 51,
                         'damage per kill': 52}
-        self.allstats = [x.lower() for x in ['K/D Ratio', 'Win %', 'Time Survived', 'Rounds Played', 'Wins', 'Win Top 10 Ratio', 'Top 10s', 'Top 10 Rate', 'Losses', 'Rating', 'Best Rating', 'Damage Pg', 'Headshot Kills Pg', 'Heals Pg', 'Kills Pg', 'Move Distance Pg', 'Revives Pg', 'Road Kills Pg', 'Team Kills Pg', 'Time Survived Pg', 'Top 10s Pg', 'Kills', 'Assists', 'Suicides', 'Team Kills', 'Headshot Kills', 'Headshot Kill Ratio', 'Vehicle Destroys', 'Road Kills', 'Daily Kills', 'Weekly Kills', 'Round Most Kills', 'Max Kill Streaks', 'Days', 'Longest Time Survived', 'Most Survival Time', 'Avg Survival Time', 'Win Points', 'Walk Distance', 'Ride Distance', 'Move Distance', 'Avg Walk Distance', 'Avg Ride Distance', 'Longest Kill', 'Heals', 'Revives', 'Boosts', 'Damage Dealt', 'Knock outs']]
+        self.allstats = [x.lower() for x in ['K/D Ratio', 'Win %', 'Time Survived', 'Rounds Played', 'Wins', 'Win Top 10 Ratio', 'Top 10s', 'Top 10 Rate', 'Losses', 'Rating', 'Best Rating', 'Damage Pg', 'Headshot Kills Pg', 'Heals Pg', 'Kills Pg', 'Move Distance Pg', 'Revives Pg', 'Road Kills Pg', 'Team Kills Pg', 'Time Survived Pg', 'Top 10s Pg', 'Kills', 'Assists', 'Suicides', 'Team Kills', 'Headshot Kills', 'Headshot Kill Ratio', 'Vehicle Destroys', 'Road Kills', 'Daily Kills', 'Weekly Kills', 'Round Most Kills', 'Max Kill Streaks', 'Days', 'Longest Time Survived', 'Most Survival Time', 'Avg Survival Time', 'Win Points', 'Walk Distance', 'Ride Distance', 'Move Distance', 'Avg Walk Distance', 'Avg Ride Distance', 'Longest Kill', 'Heals', 'Revives', 'Boosts', 'Damage Dealt', 'Knock outs', 'speed', 'rambo score', 'kills per hour', 'damage per kill', 'revives per knock out', 'boosts pg']]
         self.regs = ['eu', 'na', 'as', 'sa', 'agg']
         self.matches = ['solo', 'duo', 'squad']
         self.uptodate = self.checkuptodate()
@@ -78,6 +78,27 @@ class Tinypubgdb:
         epoch = datetime.datetime(1970, 1, 1, tzinfo=None)
         integer_timestamp = (dt - epoch) // datetime.timedelta(days=1)
         return integer_timestamp
+
+    def lookatrankings(self, match, season):
+        def lookatrank(p, m, s, sea):
+            entry = self.stat(p, m, s, sea)
+            for key in sorted(entry, reverse=True):
+                return entry[key]
+        msgs = []
+        for stat in self.allstats:
+            statrank_table = self.db.table(stat, cache_size=None)
+            if not statrank_table.search(Query().name.exists()):
+                statrank_table.insert({'name': '', 'value': 0})
+            for player in self.getsubscribers():
+                el = statrank_table.all()[0]
+                value = lookatrank(player, match, stat, season)
+                if value > el['value']:
+                    statrank_table.remove(eids=[el.eid])
+                    statrank_table.insert({'name': player, 'value': value})
+                    if el['name'] != player:
+                        msgs.append('{0} : {1}/{2} -> {3}'.format(player, match, stat, el['value']))
+                        print('{0} : {1}/{2} -> {3}'.format(player, match, stat, el['value']))
+        return msgs
 
     def checkuptodate(self):
         names = self.getsubscribers()
@@ -125,7 +146,7 @@ class Tinypubgdb:
 
     def subscribe(self, name):
         if self.subs.search(Query().name == name.lower()):
-            if self.subs.search((Query().name == name.lower()) & (Query().active is False)):
+            if self.subs.search((Query().active == False) & (Query().name == name.lower())):
                 self.subs.update({'active': True}, Query().name == name.lower())
             elif self.subs.search((Query().name == name.lower()) & (Query().active is True)):
                 raise Exception('Player ' + name + ' already subscribed')
@@ -160,7 +181,7 @@ class Tinypubgdb:
             raise Exception('Player ' + n + ' has never been subscribed')
         if self.subs.search((Query().active == False) & (Query().name == n.lower())):
             raise Exception('Player ' + n + ' is already unsubscribed')
-        self.subs.update({'active': False}, Query()['name'].lower() == n.lower() )
+        self.subs.update({'active': False}, Query().name == n.lower())
         return True
 
     def getsubscribers(self):
@@ -190,43 +211,70 @@ class Tinypubgdb:
         return vals
 
     def stat(self, player, match, stat, season):
-
-        #todo extra stats
-        ''' if stat.lower() == "speed":  # in km/h
-            distance = getstatfromelem(e, srv, match, "walk distance")
-            time = getstatfromelem(e, srv, match, "time survived")
-            time_on_ride = getstatfromelem(e, srv, match, "ride distance") / 80  # km/h
-            value = (distance * 3.6) / (time - time_on_ride)
-
-        elif stat.lower() == "rambo score":
-            distance = getstatfromelem(e, srv, match, "walk distance")
-            time = getstatfromelem(e, srv, match, "time survived")
-            time_on_ride = getstatfromelem(e, srv, match, "ride distance") / 80  # km/h
-            kills = getstatfromelem(e, srv, match, "kills")
-            value = ((distance / 1000) * kills) / (((time - time_on_ride) / 3600) * (time / 3600))
-
-        elif stat.lower() == "kills per hour":
-            time = getstatfromelem(e, srv, match, "time survived")
-            kills = getstatfromelem(e, srv, match, "kills")
-            value = kills / (time / 3600)
-
-        elif stat.lower() == "damage per kill":
-            damage = getstatfromelem(e, srv, match, "damage dealt")
-            kills = getstatfromelem(e, srv, match, "kills")
-            value = damage / kills'''
-
-        def getstatfromelem(elem, ma, st):
-            for m in elem['match']:
+        def getstatfromelem(e, ma, st):
+            for m in e['match']:
                 if m['name'] == ma:
-                    return m['stat'][self.statidx[st]]
+                    temp = m['stat'][self.statidx[st]]
+                    del temp['name']
+                    return temp
             return None
 
         p_table = self.db.table(player.lower())
         if len(p_table) < 1:
             return 0
         elem = p_table.get(Query().season == season)
-        values = getstatfromelem(elem, match, stat)
-        del values['name']
+        values = dict()
+
+        if stat.lower() == "speed":  # in km/h
+            distance = getstatfromelem(elem, match, "walk distance")
+            time = getstatfromelem(elem, match, "time survived")
+            time_on_ride = getstatfromelem(elem, match, "ride distance")  # km/h
+            for k in time.keys():
+                values[k] = (distance[k] * 3.6) / (time[k] - time_on_ride[k] / 80)
+
+        elif stat.lower() == "rambo score":
+            distance = getstatfromelem(elem, match, "walk distance")
+            time = getstatfromelem(elem, match, "time survived")
+            time_on_ride = getstatfromelem(elem, match, "ride distance")  # km/h
+            kills = getstatfromelem(elem, match, "kills")
+            for k in time.keys():
+                values[k] = ((distance[k] / 1000) * kills[k]) / (((time[k] - time_on_ride[k] / 80 ) / 3600) * (time[k] / 3600))
+
+        elif stat.lower() == "kills per hour":
+            time = getstatfromelem(elem, match, "time survived")
+            kills = getstatfromelem(elem, match, "kills")
+            for k in time.keys():
+                values[k] = kills[k] / (time[k] / 3600)
+
+        elif stat.lower() == "damage per kill":
+            damage = getstatfromelem(elem, match, "damage dealt")
+            kills = getstatfromelem(elem, match, "kills")
+            for k in damage.keys():
+                if kills[k] == 0:
+                    values[k] = 0
+                else:
+                    values[k] = damage[k] / kills[k]
+
+        elif stat.lower() == "revives per knock out":
+            revives = getstatfromelem(elem, match, "revives")
+            knockouts = getstatfromelem(elem, match, "knock outs")
+            for k in revives.keys():
+                if knockouts[k] == 0:
+                    values[k] = 0
+                else:
+                    values[k] = revives[k] / knockouts[k]
+
+        elif stat.lower() == "boosts pg":
+            boosts = getstatfromelem(elem, match, "boosts")
+            rounds = getstatfromelem(elem, match, "rounds played")
+            for k in boosts.keys():
+                if rounds[k] == 0:
+                    values[k] = 0
+                else:
+                    values[k] = boosts[k] / rounds[k]
+
+        else:
+            values = getstatfromelem(elem, match, stat)
 
         return values
 

@@ -161,6 +161,7 @@ def build_new_db(stat_db,new_stat_db):
 
 import datetime
 
+
 def test_new_db(stat_db):
     print(stat_db.update())
     entry = dict(stat_db.stat('crazy_', 'solo', 'k/d ratio', '2017-pre2'))
@@ -168,6 +169,11 @@ def test_new_db(stat_db):
     for key in sorted(entry, reverse=True):
         print(key)
     #print(stat_db.progression2('crazy_','solo','k/d ratio','2017-pre2'))
+
+
+def test_8(stat_db):
+    for m in stat_db.matches:
+        stat_db.lookatrankings(m, stat_db.getcurrentseason())
 
 
 
@@ -180,7 +186,8 @@ def test_new_db(stat_db):
 
 
 if __name__ == '__main__':
-    stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
+    #stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
     new_stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
     #build_new_db(stat_db, new_stat_db)
-    test_new_db(new_stat_db)
+    #test_new_db(new_stat_db)
+    test_8(new_stat_db)
