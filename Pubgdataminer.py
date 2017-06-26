@@ -17,5 +17,5 @@ class Pubgdataminer:
         response = self.conn.getresponse()
         res = response.read().decode("utf-8")
         print(res)
-
+        print('Response from pubgtracker.com for {}'.format(name))
         return res
