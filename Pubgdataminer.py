@@ -16,6 +16,6 @@ class Pubgdataminer:
                           headers={'TRN-Api-Key': self.apikey})
         response = self.conn.getresponse()
         res = response.read().decode("utf-8")
-        print(res)
+        #print(res)
         print('Response from pubgtracker.com for {}'.format(name))
         return res

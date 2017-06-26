@@ -1,7 +1,7 @@
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
+import matplotlib.cm as cm
 from discord.ext import commands
 import discord
 import tinypubgdb
@@ -11,6 +11,7 @@ import copy
 import asyncio
 import threading
 import datetime
+import numpy as np
 
 bot = commands.Bot(command_prefix='?')
 stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
@@ -185,7 +186,7 @@ async def profil(name: str):
     out += "```"
     await bot.say(out)
 
-@bot.command()
+@bot.command(description='''plot 2 stats for x/y for every player usage: ?scatter <stat_x> <stat_y> <match>''')
 async def scatter(stat_x: str, stat_y: str, match: str):
     await bot.type()
     global updating
@@ -195,31 +196,56 @@ async def scatter(stat_x: str, stat_y: str, match: str):
             await asyncio.sleep(1)
 
     path_pic = ('./pics/{}_{}_{}.png'.format(stat_x, stat_y, match)).replace('/', '')
-    with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
+    with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white', 'legend.numpoints': '1'}):
         fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 7))
 
-    markers = ['o', 'p', 'D', '8']
-    for i, player in enumerate(stat_db.getsubscribers()):
-        xi, yi = stat_db.scatterpubg(player, stat_x, stat_y, match, stat_db.currentseason)
+        x, y, x_, y_ = [], [], [], []
+        markers = ['o', 'p', 'D', '8']
+        for i, player in enumerate(stat_db.getsubscribers()):
+            steps = int(len(stat_db.getsubscribers()) ** (1/3))+1
+            r = 0.2 + (0.8 * (i % steps) / steps)
+            g = 0.2 + (0.8 * ((i//steps) % steps) / steps)
+            b = 0.2 + (0.8 * ((i//(steps*steps)) % steps) / steps)
+            xi, yi = stat_db.scatterpubg(player, stat_x, stat_y, match, stat_db.currentseason)
+            x.append(xi[0])
+            y.append(yi[0])
+            ax.scatter(xi,
+                       yi,
+                       alpha=1,
+                       marker=markers[i//7],
+                       s=120,
+                       c=(r, g, b, 0.9))
+        if max(x) > 0 and max(y) > 0:
+            z = np.polyfit(x, y, 2)
+            p = np.poly1d(z)
+            x_2 = np.arange(min(x), max(x), (max(x)-min(x))/1000)
+            ax.plot(x_2, p(x_2), alpha=0.4, c='#FF0040', linewidth=4)
+            labels = ['polyfit'] + stat_db.getsubscribers()
+        else:
+            labels = stat_db.getsubscribers()
 
-        print('{}/{}/{}/{}/{}'.format(player, stat_x, xi, stat_y, yi))
-        ax.plot(xi, yi, alpha=0.7, marker=markers[i//7], linewidth=3, markersize=15)
+        ax.grid(color=(154 / 256, 157 / 256, 162 / 256), linestyle='-', linewidth=1)
+        ax.patch.set_alpha(0.1)
+        fig.patch.set_alpha(0)
+        plt.ylabel(stat_y)
+        plt.xlabel(stat_x)
+        chartBox = ax.get_position()
+        cols = len(stat_db.getsubscribers()) // 25 + 1
+        ax.set_position([chartBox.x0, chartBox.y0, chartBox.width * (1-cols*0.17), chartBox.height])
+        leg = ax.legend(labels,
+                        loc='upper center',
+                        bbox_to_anchor=(1+0.17*cols, 1),
+                        prop={'size': 10},
+                        ncol=cols,
+                        framealpha=0.1,
+                        scatterpoints=1)
+        for text in leg.get_texts():
+            text.set_color('w')
+        ax.xaxis.label.set_color('w')
+        ax.yaxis.label.set_color('w')
+        fig.savefig(path_pic, facecolor=fig.get_facecolor())
 
-    ax.grid(color=(154 / 256, 157 / 256, 162 / 256), linestyle='-', linewidth=1)
-    ax.patch.set_alpha(0.1)
-    fig.patch.set_alpha(0)
-    plt.ylabel(stat_y)
-    plt.xlabel(stat_x)
-    chartBox = ax.get_position()
-    ax.set_position([chartBox.x0, chartBox.y0, chartBox.width * 0.6, chartBox.height])
-    leg = ax.legend(stat_db.getsubscribers(), loc='upper center', bbox_to_anchor=(1.3, 1), ncol=1, framealpha=0.1)
-    for text in leg.get_texts():
-        text.set_color('w')
-    ax.xaxis.label.set_color('w')
-    ax.yaxis.label.set_color('w')
-    fig.savefig(path_pic, facecolor=fig.get_facecolor())
-
-    await bot.upload(path_pic)
+        await bot.upload(path_pic)
 
 
 @bot.command(description='use to subscribe a player to the database to track stats')
@@ -294,7 +320,7 @@ async def progression(*params: str):
         names_for_match = copy.deepcopy(names)
         await bot.type()
         path_pic = './pics/' + (str(names_for_match).lower() + srv.lower() + str(m).lower() + stat.lower() + '.png').replace('/', '')
-        with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
+        with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white', 'image.cmap': 'tab20'}):
             fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(14, 8))
 
             x, y, x_labels = [], [], []

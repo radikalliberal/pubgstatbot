@@ -1,9 +1,12 @@
+import threading
+
 import tinypubgdb
 import matplotlib.pyplot as plt
 import ujson
 import matplotlib
 import Pubgdataminer
 import sys
+import time
 
 regs = ['eu', 'na', 'as', 'sa', 'agg']
 matches = ['solo', 'duo', 'squad']
@@ -38,8 +41,8 @@ def test_3(stat_db):
     print(stat_db.getseasons())
 
 def test_4(stat_db):
-    x = [1,2]
-    y = [1,2]
+    x = [1, 2]
+    y = [1, 2]
     x_labels = ['123','234']
     with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white'}):
         fig, ax = plt.subplots(nrows=1, ncols=1)
@@ -176,6 +179,39 @@ def test_8(stat_db):
         stat_db.lookatrankings(m, stat_db.getcurrentseason())
 
 
+def redis_test():
+    import redis
+    # create a connection to the localhost Redis server instance, by
+    # default it runs on port 6379
+    redis_db = redis.StrictRedis(host="localhost", port=6379, db=0)
+    # see what keys are in Redis
+    redis_db.keys()
+    # output for keys() should be an empty list "[]"
+    redis_db.set('full stack', 'python')
+    # output should be "True"
+    redis_db.keys()
+    # now we have one key so the output will be "[b'full stack']"
+    redis_db.get('full stack')
+    # output is "b'python'", the key and value still exist in Redis
+    redis_db.incr('twilio')
+    # output is "1", we just incremented even though the key did not
+    # previously exist
+    redis_db.get('twilio')
+    # output is "b'1'" again, since we just obtained the value from
+    # the existing key
+    redis_db.delete('twilio')
+    # output is "1" because the command was successful
+    redis_db.get('twilio')
+    # nothing is returned because the key and value no longer exist
+
+
+def test_9(stat_db):
+    print(stat_db.scatterpubg('crazy_', 'kills pg', 'damage pg', 'solo', '2017-pre2'))
+
+
+def test_10(stat_db):
+    for player in stat_db.getsubscribers():
+        stat_db.update(player, forced=True)
 
 
 #test_1()
@@ -190,4 +226,6 @@ if __name__ == '__main__':
     new_stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
     #build_new_db(stat_db, new_stat_db)
     #test_new_db(new_stat_db)
-    test_8(new_stat_db)
+    #test_8(new_stat_db)
+    #redis_test()
+    test_9(new_stat_db)
