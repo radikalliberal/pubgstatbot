@@ -1,7 +1,6 @@
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 from discord.ext import commands
 import discord
 import tinypubgdb
@@ -12,6 +11,7 @@ import asyncio
 import threading
 import datetime
 import numpy as np
+import imageio
 
 bot = commands.Bot(command_prefix='?')
 stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[2]))
@@ -27,7 +27,7 @@ def extendlength(stri, length, mode=None):
 
 def table(players, match, stat, seas):
 
-    table = dict()
+    tabl = dict()
     tab = []
     maxsize = 0
     maxsize_change = 0
@@ -41,29 +41,32 @@ def table(players, match, stat, seas):
                     vals.append(vals[0]-vals[1])
                     break
 
-            table[player] = vals
+            if len(vals) < 1:
+                vals = [0]
+            tabl[player] = vals
         except Exception as e:
             print(e)
-            table[player] = [0]
-
-        if len(str(table[player][0])) > maxsize:
-            maxsize = len('{:.2f}'.format(table[player][0]*1.0))
-        if len(table[player]) > 1 and len('{:+.2f}'.format(table[player][2]*1.0)) > maxsize_change:
-            maxsize_change = len('{:+.2f}'.format(table[player][2]*1.0))
-    print(table)
-    ordered_table = sorted(table, key=table.__getitem__)
-    for i, x in enumerate(ordered_table[::-1]):
-        if len(table[x]) > 1:
-            scores = extendlength('{:.2f}'.format(table[x][0]*1.0), maxsize+1, 'right') + ' (' + extendlength('{:+.2f}'.format(table[x][2]*1.0), maxsize_change, 'right') + ')'
+            tabl[player] = [0]
+        print(tabl[player])
+        if len(str(tabl[player][0])) > maxsize:
+            maxsize = len('{:.2f}'.format(tabl[player][0]*1.0))
+        if len(tabl[player]) > 1 and len('{:+.2f}'.format(tabl[player][2]*1.0)) > maxsize_change:
+            maxsize_change = len('{:+.2f}'.format(tabl[player][2]*1.0))
+    print(tabl)
+    ordered_tabl = sorted(tabl, key=tabl.__getitem__)
+    for i, x in enumerate(ordered_tabl[::-1]):
+        if len(tabl[x]) > 1:
+            scores = extendlength('{:.2f}'.format(tabl[x][0]*1.0), maxsize+1, 'right') + \
+                     ' (' + extendlength('{:+.2f}'.format(tabl[x][2]*1.0), maxsize_change, 'right') + ')'
         else:
-            scores = extendlength('{:.2f}'.format(table[x][0]*1.0), maxsize+1, 'right')
+            scores = extendlength('{:.2f}'.format(tabl[x][0]*1.0), maxsize+1, 'right')
         tab.append(extendlength(str(i+1), 2, 'right') + '. ' + extendlength(x, 20) + scores)
     return tab
 
 
 @bot.event
 async def on_ready():
-    stat_db.checkuptodate()
+    #stat_db.checkuptodate()
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
@@ -71,6 +74,7 @@ async def on_ready():
 
 
 async def autoupdate():
+    # Todo: make daily backups of database and delete old updates older than 7 days
     await bot.wait_until_ready()
     while not bot.is_closed:
         global updating
@@ -84,14 +88,14 @@ async def autoupdate():
         while t.is_alive():
             await asyncio.sleep(1)
         updating = False
-        table = []
-        table.append(extendlength('match', 7) + extendlength('stat', 25) +
-                     extendlength('player', 20) + extendlength('score', 10))
-
-        table.append('--------------------------------------------------------------')
         current_season = stat_db.getcurrentseason()
         for m in stat_db.matches:
             mset = False
+            table = []
+            table.append(extendlength('match', 7) + extendlength('stat', 25) +
+                         extendlength('player', 20) + extendlength('score', 10))
+
+            table.append('--------------------------------------------------------------')
             for s in stat_db.allstats:
                 msg = stat_db.lookatrankings(m, s, current_season)
                 await asyncio.sleep(0.1)
@@ -106,10 +110,10 @@ async def autoupdate():
                                      extendlength(msg['player'], 20) +
                                      extendlength('{:.2f}'.format(msg['value']), 10, 'right'))
 
-        m = '**Top1 changes for Stats**\n```' + '\n'.join(table) + '```'
-        print(m)
-        if len(table) > 2:
-            await bot.send_message(channel, m)
+            m = '**Top1 changes for Stats**\n```' + '\n'.join(table) + '```'
+            print(m)
+            if len(table) > 2:
+                await bot.send_message(channel, m)
         await asyncio.sleep(60 * 60)
 
 
@@ -180,8 +184,11 @@ async def profil(name: str):
         out += '\n' + extendlength(stat, 20, 'right') + ':'
         for match in ['solo', 'duo', 'squad']:
             dic = stat_db.stat(name, match, stat, stat_db.getcurrentseason())
-            tstamp = str(stat_db.tointtimestamp(datetime.datetime.today()))
-            value = dic[tstamp]
+            if dic is None:
+                value = 0
+            else:
+                tstamp = str(stat_db.tointtimestamp(datetime.datetime.today()))
+                value = dic[tstamp]
             out += extendlength('{:.2f}'.format(value), 10, 'right')
     out += "```"
     await bot.say(out)
@@ -206,7 +213,7 @@ async def scatter(stat_x: str, stat_y: str, match: str):
             r = 0.2 + (0.8 * (i % steps) / steps)
             g = 0.2 + (0.8 * ((i//steps) % steps) / steps)
             b = 0.2 + (0.8 * ((i//(steps*steps)) % steps) / steps)
-            xi, yi = stat_db.scatterpubg(player, stat_x, stat_y, match, stat_db.currentseason)
+            xi, yi = stat_db.scatterpubg(player, stat_x, stat_y, match, stat_db.currentseason, 1)
             x.append(xi[0])
             y.append(yi[0])
             ax.scatter(xi,
@@ -246,6 +253,131 @@ async def scatter(stat_x: str, stat_y: str, match: str):
         fig.savefig(path_pic, facecolor=fig.get_facecolor())
 
         await bot.upload(path_pic)
+
+
+@bot.command(description='''make a gif of 2 stats for x/y plotted for every player usage: ?scattergif <stat_x> <stat_y> <match>''')
+async def scattergif(stat_x: str, stat_y: str, match: str):
+    await bot.type()
+    global updating
+
+    def dnone(a):
+        b = []
+        for x in a:
+            if x is not None:
+                b.append(x)
+        return b
+
+    if updating:
+        await bot.say('updating Database please be patient.')
+        while updating:
+            await asyncio.sleep(1)
+
+    with plt.rc_context({'axes.edgecolor': 'white', 'xtick.color': 'white', 'ytick.color': 'white', 'legend.numpoints': '1'}):
+        iterations = 20
+        x, y, x_, y_, maxx, maxy = [], [], [], [], [], []
+        xi, yi = {}, {}
+        markers = ['o', 'p', 'D', '8']
+        xi['min'], yi['min'] = 10000, 10000
+        xi['max'], yi['max'] = 0, 0
+        maxdata = 0
+        for k, player in enumerate(stat_db.getsubscribers()):
+            xii, yii = stat_db.scatterpubg(player, stat_x, stat_y, match, stat_db.currentseason, iterations)
+            xi[player] = xii
+            yi[player] = yii
+            if len(xii) > maxdata:
+                maxdata = len(xii)
+            if xi['min'] > min(dnone(xii)):
+                xi['min'] = min(dnone(xii))
+            if yi['min'] > min(dnone(yii)):
+                yi['min'] = min(dnone(yii))
+            if xi['max'] < max(dnone(xii)):
+                xi['max'] = max(dnone(xii))
+            if yi['max'] < max(dnone(yii)):
+                yi['max'] = max(dnone(yii))
+
+        for j in range(iterations-1):
+            path_pic = ('./pics/{}.png'.format(j))
+            fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 5))
+            for i, player in enumerate(stat_db.getsubscribers()):
+                steps = int(len(stat_db.getsubscribers()) ** (1/3))+1
+                r = 0.2 + (0.8 * (i % steps) / steps)
+                g = 0.2 + (0.8 * ((i//steps) % steps) / steps)
+                b = 0.2 + (0.8 * ((i//(steps*steps)) % steps) / steps)
+                #xi, yi = stat_db.scatterpubg(player, stat_x, stat_y, match, stat_db.currentseason)
+                if  len(xi[player]) >= j+1 and \
+                    len(yi[player]) >= j+1 and \
+                        xi[player][j] is not None and yi[player][j] is not None and\
+                        (xi[player][j] > 0 or yi[player][j] > 0):
+                    x.append(xi[player][j])
+                    y.append(yi[player][j])
+                    ax.scatter(xi[player][j],
+                               yi[player][j],
+                               alpha=1,
+                               marker=markers[i//7],
+                               s=120,
+                               c=(r, g, b))
+                else:
+                    ax.scatter(0,
+                               0,
+                               alpha=0,
+                               marker=markers[i // 7],
+                               s=120,
+                               c=(r, g, b))
+            if len(x) > 0 and len(y) > 0 and max(x) > 0 and max(y) > 0:
+                z = np.polyfit(x, y, 2)
+                p = np.poly1d(z)
+                x_2 = np.arange(xi['min'], xi['max'], (xi['max'] - xi['min'])/1000)
+                ax.plot(x_2, p(x_2), alpha=0.4, c='#FF0040', linewidth=4)
+                labels = ['polyfit'] + stat_db.getsubscribers()
+            else:
+                labels = stat_db.getsubscribers()
+
+            title_obj = plt.title((datetime.datetime.today() - datetime.timedelta(days=iterations-j-1)).date(),
+                                  fontsize=20)
+            plt.setp(title_obj, color='w')
+            ax.grid(color=(1, 1, 1), linestyle='--', linewidth=1)
+            ax.patch.set_color((54/256, 57/256, 62/256))
+            fig.patch.set_color((54/256, 57/256, 62/256))
+            plt.ylabel(stat_y)
+            plt.xlabel(stat_x)
+            chartBox = ax.get_position()
+            cols = len(stat_db.getsubscribers()) // 25 + 1
+            ax.set_position([chartBox.x0, chartBox.y0, chartBox.width * (1-cols*0.17), chartBox.height])
+            plt.ylim((yi['min']*0.9, yi['max']*1.1))
+            plt.xlim((xi['min']*0.9, xi['max']*1.1))
+            leg = ax.legend(labels,
+                            loc='upper center',
+                            bbox_to_anchor=(1+0.17*cols, 1),
+                            prop={'size': 7},
+                            ncol=cols,
+                            framealpha=0.1,
+                            scatterpoints=1)
+            for text in leg.get_texts():
+                text.set_color('w')
+            ax.xaxis.label.set_color('w')
+            ax.yaxis.label.set_color('w')
+            fig.savefig(path_pic, facecolor=fig.get_facecolor())
+            plt.close(fig)
+
+        filenames_blend = []
+        filenames = ['./pics/{}.png'.format(x) for x in range(iterations - 1)]
+        #for i,fn in enumerate(filenames):
+        #    if i == len(filenames)-1:
+        #        break
+        #    im1 = imageio.imread(filenames[i])
+        #    im2 = imageio.imread(filenames[i+1])
+        #    imageio.imwrite('./pics/{}.png'.format(i), im1/2+im1/2)
+        #    filenames_blend.append(fn)
+        #    for k in range(4):
+        #        imageio.imwrite('./pics/{}blend{}.png'.format(i, k), im2/(1-0.2*(k+1))+im1/(0.2*(k+1)))
+        #        filenames_blend.append('./pics/{}blend{}.png'.format(i, k))
+
+        images = []
+        #print(filenames_blend)
+        for filename in filenames:
+            images.append(imageio.imread(filename))
+        imageio.mimsave('./pics/scatter.gif', images, fps=6, loop=1)
+        await bot.upload('./pics/scatter.gif')
 
 
 @bot.command(description='use to subscribe a player to the database to track stats')
@@ -420,17 +552,17 @@ async def subscribers():
     print('?subscribers')
     await bot.say(str(stat_db.getsubscribers()))
 
-
+# Todo: nur die aktuelle Saison zeigen und noch einen Parameter für saeson einfügen
 @bot.command(description='''show ranking of all subscribed players for a specific stat
 
-            ?stats "stat" [match [region]]   
+            ?stats "stat" [match [season]]   
             possible parameters:
-            region = {0}
-            match = {1}                
+            match = {0}                
+            season = {1}
             stats <- if multiple words the quotes are needed = {2}
             
             example: ?stats "Longest Kill" squad eu
-            '''.format(stat_db.regs, stat_db.matches, stat_db.allstats))
+            ```'''.format(stat_db.matches, stat_db.getseasons(), stat_db.allstats))
 async def stats(*params: str):
     global updating
     if updating:
@@ -440,84 +572,80 @@ async def stats(*params: str):
 
     if len(params) < 1:
         text = '''```Help: functioncall ?stats 
-            ?stats "stat" match region   
+            ?stats "stat" [match [season]]   
             possible parameters:
-            region = {0}
-            match = {1}                
+            match = {0}                
+            season = {1}
             stats <- if multiple words the quotes are needed = {2}
             
-            example: ?stats "Longest Kill" squad eu
-            ```'''.format(stat_db.regs, stat_db.matches, stat_db.allstats)
+            example: ?stats "Longest Kill" squad 2017-pre2
+            ```'''.format(stat_db.matches, stat_db.getseasons(), stat_db.allstats)
         await bot.say(text)
         return
 
     elif len(params) >= 3:
-        stat, match, srv = params[0], [params[1]], params[2]
+        stat, match, season = params[0], [params[1]], params[2]
     elif len(params) == 2:
-        stat, match, srv = params[0], [params[1]], 'agg'
+        stat, match, season = params[0], [params[1]], stat_db.currentseason
     elif len(params) == 1:
-        stat, match, srv = params[0], ['solo', 'duo', 'squad'], 'agg'
+        stat, match, season = params[0], ['solo', 'duo', 'squad'], stat_db.currentseason
 
     match2 = ''
     for m in match:
         match2 = match2 + ',' + m
 
-    print('?stats ' + srv + ' ' + match2 + ' ' + stat)
+    print('?stats ' + season + ' ' + match2 + ' ' + stat)
     stat_db.checkuptodate()
     names = stat_db.getsubscribers()
     if stat.lower() not in stat_db.allstats:
         await bot.say('```queryied Stat {0} not available.\n\nChoose one of these:\n{1}```'.format(stat, stat_db.allstats))
         return
-    if srv not in stat_db.regs:
-        await bot.say('```Server :{0} does not exist.\n\nChoose one of these.\n{1}```'.format(srv, stat_db.regs))
+    if season not in stat_db.getseasons():
+        await bot.say('```Server :{0} does not exist.\n\nChoose one of these.\n{1}```'.format(season, stat_db.getseasons()))
         return
     if match[0] not in stat_db.matches:
         await bot.say('```matching :{0} does not exist.\n\nChoose one of these.\n{1}```'.format(match, stat_db.matches))
 
     for m in match:
         await bot.type()
-        seasons = stat_db.getseasons()
-        out = "```\n"
-        for s in seasons:
-
-                out = out + s + '\n------------------------------------------\n'
-                t = table(names, m, stat, s)
-                for entry in t:
-                        out = out + entry + '\n'
-                out = out + '\n'
+        out = "```\n" + season + '\n------------------------------------------\n'
+        t = table(names, m, stat, season)
+        for entry in t:
+                out = out + entry + '\n'
+        out = out + '\n'
 
         await bot.say('Ranking - ' + m + ' - ' + stat + '\n' + out + '```')
 
 
-@bot.command(description='update the database, use "?update force" to overwrite the last update with newer numbers for the day')
-async def update(*forced: str):
-    global updating
-    if updating:
-        await bot.say('already updating Database please be patient.')
-        return
-
-    await bot.type()
-    stat_db.checkuptodate()
-    print('?update {}'.format(forced))
-    if len(forced) == 1:
-        if forced[0] == 'force':
-            updating = True
-            for player in stat_db.getsubscribers():
-                stat_db.update(player, forced=True)
-                await asyncio.sleep(0.1)
-            updating = False
-            await bot.say('Database update forced')
-        else:
-            await bot.say('use either "?update" or "?update force"\
-                                    \n force does overwrite the last capture from today with new data if available')
-    elif len(forced) > 1:
-        await bot.say('use either "?update" or "?update force"\
-                        \n force does overwrite the last capture from today with new data if available')
-    else:
-        for player in stat_db.getsubscribers():
-            stat_db.update(player)
-            await asyncio.sleep(0.1)
-        await bot.say('Database updated')
+#@bot.command(description='update the database, use "?update force" to overwrite the last update with newer numbers for the day')
+#async def update(*forced: str):
+#    global updating
+#    if updating:
+#        await bot.say('already updating Database please be patient.')
+#        return
+#
+#    await bot.type()
+#    stat_db.checkuptodate()
+#    print('?update {}'.format(forced))
+#    if len(forced) == 1:
+#        if forced[0] == 'force':
+#            updating = True
+#            for player in stat_db.getsubscribers():
+#                stat_db.update(player, forced=True)
+#                await asyncio.sleep(0.1)
+#            updating = False
+#            await bot.say('Database update forced')
+#        else:
+#            await bot.say('use either "?update" or "?update force"\
+#                                    \n force does overwrite the last capture from today with new data if available')
+#    elif len(forced) > 1:
+#        await bot.say('use either "?update" or "?update force"\
+#                        \n force does overwrite the last capture from today with new data if available')
+#    else:
+#        for player in stat_db.getsubscribers():
+#            stat_db.update(player)
+#            await asyncio.sleep(0.1)
+#        await bot.say('Database updated')
 
 
 @bot.command(description='returns the current season for pubg')

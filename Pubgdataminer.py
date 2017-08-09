@@ -1,4 +1,5 @@
 import http.client
+import datetime
 
 class Pubgdataminer:
     def __init__(self, api_key):
@@ -12,10 +13,11 @@ class Pubgdataminer:
         self.conn.close()
 
     def getdata(self, name):
+        print('[{}] Request for {} send'.format(datetime.datetime.now(), name))
         self.conn.request("GET", '/api/profile/pc/' + name,
                           headers={'TRN-Api-Key': self.apikey})
         response = self.conn.getresponse()
         res = response.read().decode("utf-8")
         #print(res)
-        print('Response from pubgtracker.com for {}'.format(name))
+        print('[{}] Response for {}'.format(datetime.datetime.now(), name))
         return res

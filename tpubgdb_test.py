@@ -1,17 +1,12 @@
-import threading
-
 import tinypubgdb
 import matplotlib.pyplot as plt
 import ujson
 import matplotlib
 import Pubgdataminer
 import sys
-import time
 
 regs = ['eu', 'na', 'as', 'sa', 'agg']
 matches = ['solo', 'duo', 'squad']
-
-
 
 
 def test_1(stat_db):
@@ -30,15 +25,16 @@ def test_1(stat_db):
         print(e)
 
 
-
 def test_2(stat_db):
     stat_db.update()
     erg = stat_db.progression('crazy_', 'agg', 'squad', 'kills', '2017-pre2')
     print(erg)
 
+
 def test_3(stat_db):
     stat_db.update()
     print(stat_db.getseasons())
+
 
 def test_4(stat_db):
     x = [1, 2]
@@ -206,12 +202,14 @@ def redis_test():
 
 
 def test_9(stat_db):
-    print(stat_db.scatterpubg('crazy_', 'kills pg', 'damage pg', 'solo', '2017-pre2'))
+    stat_db.update()
 
 
 def test_10(stat_db):
     for player in stat_db.getsubscribers():
         stat_db.update(player, forced=True)
+
+
 
 
 #test_1()
@@ -223,7 +221,7 @@ def test_10(stat_db):
 
 if __name__ == '__main__':
     #stat_db = tinypubgdb.Tinypubgdb('db.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
-    new_stat_db = tinypubgdb.Tinypubgdb('db2.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
+    new_stat_db = tinypubgdb.Tinypubgdb('db3.json', Pubgdataminer.Pubgdataminer(sys.argv[1]))
     #build_new_db(stat_db, new_stat_db)
     #test_new_db(new_stat_db)
     #test_8(new_stat_db)
